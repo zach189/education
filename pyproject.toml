@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "liquid-compute"
+version = "0.1.0"
+description = "Explicit, reusable calculations for compute economics lessons"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+colab = ["matplotlib>=3.9,<4", "ipywidgets>=8.1,<9"]
+notebook = ["matplotlib>=3.9,<4", "ipywidgets>=8.1,<9", "ipython>=8.20,<9", "ipykernel>=6.29,<7", "jupyterlab>=4.2,<5"]
+dev = ["pytest>=8,<9", "ruff>=0.11,<1", "mypy>=1.15,<2", "nbformat>=5.10,<6", "nbclient>=0.10,<1"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+liquid_compute = ["py.typed"]
+
+[tool.ruff]
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "UP"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+# IPython exposes untyped display calls; keep our public interfaces fully typed.
+untyped_calls_exclude = ["IPython"]
+files = ["src/liquid_compute"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[[tool.mypy.overrides]]
+module = ["ipywidgets", "ipywidgets.*"]
+ignore_missing_imports = true
