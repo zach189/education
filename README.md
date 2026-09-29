@@ -6,7 +6,7 @@ All 26 notebooks were run locally with outputs saved. Use **Read notebook** to s
 
 ## Ready
 
-Notebooks 1–4 and the option lessons: calls and puts, option valuation, and compound options.
+Notebooks 1–4, calls and puts, option valuation, and the compute lab financing case study.
 
 | Notebook | Open and run | Saved outputs |
 |---|---|---|
@@ -16,7 +16,7 @@ Notebooks 1–4 and the option lessons: calls and puts, option valuation, and co
 | 4 / M1 — The Tenor Trade: Buying Long, Selling Short | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/04_the_tenor_trade.ipynb) | [Read notebook](notebooks/04_the_tenor_trade.ipynb) |
 | M5 — Calls and puts: price protection with a premium | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/M5_calls_and_puts.ipynb) | [Read notebook](notebooks/M5_calls_and_puts.ipynb) |
 | M6 — Option valuation through replication | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/M6_option_valuation.ipynb) | [Read notebook](notebooks/M6_option_valuation.ipynb) |
-| E1 · Compound options and staged protection | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/E1_compound_options.ipynb) | [Read notebook](notebooks/E1_compound_options.ipynb) |
+| Can a training lab support a USD 500 million GPU loan? | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/case_lab_gpu_financing.ipynb) | [Read notebook](notebooks/case_lab_gpu_financing.ipynb) |
 
 ## WIP
 
@@ -37,12 +37,12 @@ These lessons have runnable examples and saved outputs, but remain works in prog
 | M3 — Basis Risk: When the Index Isn’t Your Price | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/M3_benchmark_basis_risk.ipynb) | [Read notebook](notebooks/M3_benchmark_basis_risk.ipynb) |
 | M4 — Price, demand and delivery scenarios | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/M4_price_quantity_scenarios.ipynb) | [Read notebook](notebooks/M4_price_quantity_scenarios.ipynb) |
 | M7 — Hedge collateral and liquidity | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/M7_hedge_collateral_liquidity.ipynb) | [Read notebook](notebooks/M7_hedge_collateral_liquidity.ipynb) |
+| E1 · Compound options and staged protection | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/E1_compound_options.ipynb) | [Read notebook](notebooks/E1_compound_options.ipynb) |
 | E2 · Minimum revenue with shared upside | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/E2_minimum_revenue_shared_upside.ipynb) | [Read notebook](notebooks/E2_minimum_revenue_shared_upside.ipynb) |
 | E3 · Power costs and compute margins | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/E3_power_costs_compute_margins.ipynb) | [Read notebook](notebooks/E3_power_costs_compute_margins.ipynb) |
 | E4 · Floating-rate financing | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/E4_floating_rate_financing.ipynb) | [Read notebook](notebooks/E4_floating_rate_financing.ipynb) |
 | E5 · Historical measurement and the observation window | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/E5_historical_risk_measurement.ipynb) | [Read notebook](notebooks/E5_historical_risk_measurement.ipynb) |
 | E6 · Cost per useful output | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/E6_cost_per_useful_output.ipynb) | [Read notebook](notebooks/E6_cost_per_useful_output.ipynb) |
-| Can a training lab support a USD 500 million GPU loan? | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/case_lab_gpu_financing.ipynb) | [Read notebook](notebooks/case_lab_gpu_financing.ipynb) |
 
 C1, the transaction-structuring capstone, is planned and has no notebook yet.
 
