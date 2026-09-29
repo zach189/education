@@ -14,6 +14,7 @@ from liquid_compute.education import (
     explore_option_valuation,
     lab_training_explorer,
     plot_forward_hedge,
+    plot_lab_case,
     plot_option_protection,
     plot_option_tree,
     show_lab_decision_summary,
@@ -21,6 +22,44 @@ from liquid_compute.education import (
 )
 from liquid_compute.lab_financing import LabInputs
 from liquid_compute.option_valuation import binomial_european_option_tree
+
+
+def test_lab_cash_breakdown_and_target_without_phantom_shortfall():
+    fig = plot_lab_case(LabInputs(), view="cash")
+    waterfall, timeline = fig.axes
+    assert [bar.get_height() for bar in waterfall.patches] == pytest.approx(
+        [39.3984, -14.81952, 24.57888, -12.4262878836, 12.1525921164]
+    )
+    assert list(timeline.lines[0].get_ydata()) == pytest.approx([12.1525921164] * 60)
+    assert list(timeline.lines[1].get_ydata()) == pytest.approx([3.1065719709] * 60)
+    assert "shortfall" not in " ".join(timeline.get_legend_handles_labels()[1]).lower()
+
+
+def test_lab_cash_shortfall_and_weakest_month_for_balloon():
+    fig = plot_lab_case(replace(LabInputs(), repayment="balloon"), view="cash")
+    waterfall, timeline = fig.axes
+    assert "Month 60" in waterfall.get_title()
+    assert waterfall.patches[-1].get_height() == pytest.approx(-482.5044533333)
+    assert "Monthly shortfall" in timeline.get_legend_handles_labels()[1]
+    assert timeline.lines[0].get_ydata()[-1] < 0
+    # Even a single shortfall at maturity must have a visible bar.
+    assert any(bar.get_height() < 0 for bar in timeline.patches)
+
+
+def test_lab_cash_target_breach_is_distinct_from_payment_shortfall():
+    fig = plot_lab_case(replace(LabInputs(), contracted_fraction=0.22), view="cash")
+    timeline = fig.axes[1]
+    margin = timeline.lines[0].get_ydata()[0]
+    target = timeline.lines[1].get_ydata()[0]
+    assert 0 < margin < target
+    assert "Monthly shortfall" not in timeline.get_legend_handles_labels()[1]
+
+
+def test_lab_cash_without_debt_has_no_coverage_ratio():
+    fig = plot_lab_case(replace(LabInputs(), advance_fraction=0), view="cash")
+    assert "No debt payments" in fig.axes[1].get_title()
+    assert all(value == 0 for value in fig.axes[1].lines[1].get_ydata())
+
 
 FORWARD = dict(
     physical_gpu_hours=7200, hedge_gpu_hours=7200, strike_usd_per_gpu_hour=5.0

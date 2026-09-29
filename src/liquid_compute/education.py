@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     from ipywidgets import VBox
     from matplotlib.figure import Figure
 
-    from .lab_financing import LabInputs
+    from .lab_financing import LabInputs, LabResult
     from .option_valuation import BinomialTree
     from .risk_statistics import MonthlyPrice
     from .tenor_trade import ResellerCommitmentRow
@@ -2050,6 +2050,115 @@ def plot_tenor_price_snapshot(
     return fig
 
 
+def _plot_lab_cash(result: "LabResult", minimum_dscr: float) -> "Figure":
+    """Explain monthly cash uses and coverage headroom from the existing model."""
+    import matplotlib.pyplot as plt
+
+    rows = result.months
+    weakest = min(rows, key=lambda r: r.cfads_usd - r.debt_service_usd)
+    receipts = weakest.external_receipts_usd / 1e6
+    costs = weakest.operating_cost_usd / 1e6
+    cfads = weakest.cfads_usd / 1e6
+    payment = weakest.debt_service_usd / 1e6
+    remaining = cfads - payment
+    margins = [(r.cfads_usd - r.debt_service_usd) / 1e6 for r in rows]
+    steady = all(abs(m - margins[0]) < 1e-8 for m in margins)
+    fig, (waterfall, timeline) = plt.subplots(
+        1, 2, figsize=(12, 5), layout="constrained"
+    )
+    waterfall.bar(
+        range(5),
+        [receipts, -costs, cfads, -payment, remaining],
+        bottom=[0, receipts, 0, cfads, 0],
+        color=[
+            "#246b8e",
+            "#a35d21",
+            "#246b8e",
+            "#a35d21",
+            "#27806b" if remaining >= 0 else "#cf5b48",
+        ],
+        width=0.65,
+    )
+    for i, (value, top) in enumerate(
+        zip(
+            [receipts, -costs, cfads, -payment, remaining],
+            [receipts, receipts, cfads, cfads, remaining],
+        )
+    ):
+        waterfall.annotate(
+            f"{value:+.2f}" if i in (1, 3) else f"{value:.2f}",
+            (i, top),
+            xytext=(0, 7 if top >= 0 else -14),
+            textcoords="offset points",
+            ha="center",
+            fontsize=10,
+        )
+    waterfall.set(
+        xticks=range(5),
+        xticklabels=[
+            "External\nreceipts",
+            "Operating\ncosts",
+            "Available\nfor debt",
+            "Loan\npayment",
+            "After\npayment",
+        ],
+        ylabel="USD millions / month",
+        title="Where does the monthly cash go?\n"
+        + (
+            "Same amounts each month"
+            if steady
+            else f"Month {weakest.month}: smallest margin after payment"
+        ),
+    )
+    low, high = min(0, receipts, cfads, remaining), max(0, receipts, cfads, remaining)
+    padding = max(1, (high - low) * 0.18)
+    waterfall.set_ylim(low - padding, high + padding)
+    waterfall.axhline(0, color="gray", linewidth=0.8)
+    waterfall.grid(axis="y", alpha=0.2)
+    months = [r.month for r in rows]
+    timeline.plot(months, margins, color="#246b8e", label="Cash after loan payment")
+    if any(m > 0 for m in margins):
+        timeline.bar(
+            [month for month, margin in zip(months, margins) if margin > 0],
+            [margin for margin in margins if margin > 0],
+            width=0.9,
+            color="#27806b",
+            alpha=0.18,
+            label="Monthly surplus",
+        )
+    if any(m < 0 for m in margins):
+        timeline.bar(
+            [month for month, margin in zip(months, margins) if margin < 0],
+            [margin for margin in margins if margin < 0],
+            width=0.9,
+            color="#cf5b48",
+            alpha=0.3,
+            label="Monthly shortfall",
+        )
+    timeline.plot(
+        months,
+        [(minimum_dscr - 1) * r.debt_service_usd / 1e6 for r in rows],
+        "--",
+        color="#a35d21",
+        label=f"Margin needed for {minimum_dscr:g}× coverage",
+    )
+    coverage = (
+        "No debt payments"
+        if result.minimum_dscr is None
+        else (f"Minimum coverage {result.minimum_dscr:.2f}×; target {minimum_dscr:g}×")
+    )
+    timeline.set(
+        xlabel="Month after purchase",
+        ylabel="USD millions / month",
+        title=f"Does cash clear the payment and target?\n{coverage}",
+    )
+    timeline.axhline(0, color="gray", linewidth=0.8)
+    timeline.legend(fontsize=8)
+    timeline.grid(alpha=0.2)
+    plt.close(fig)
+    return fig
+
+
 def plot_lab_case(inputs: "LabInputs", *, view: str) -> "Figure":
     """Case-study views; dollar axes in millions, capacity in million GPU-hours."""
     from dataclasses import replace
@@ -2059,6 +2168,8 @@ def plot_lab_case(inputs: "LabInputs", *, view: str) -> "Figure":
     from .lab_financing import liquidation_stress, model_lab
 
     result = model_lab(inputs)
+    if view == "cash":
+        return _plot_lab_cash(result, inputs.minimum_dscr)
     rows = result.months
     months = [r.month for r in rows]
     fig, ax = plt.subplots(figsize=(9, 4.5), layout="constrained")
@@ -2112,26 +2223,6 @@ def plot_lab_case(inputs: "LabInputs", *, view: str) -> "Figure":
             ylabel="Million usable GPU-hours / month", title="Who uses the equipment?"
         )
         ax.legend(loc="upper left", ncol=2)
-    elif view == "cash":
-        cash = [r.cfads_usd / 1e6 for r in rows]
-        service = [r.debt_service_usd / 1e6 for r in rows]
-        ax.plot(months, cash, label="Cash available for debt service")
-        ax.plot(months, service, label="Interest + principal")
-        ax.fill_between(
-            months,
-            cash,
-            service,
-            where=[c < d for c, d in zip(cash, service)],
-            color="#cf5b48",
-            alpha=0.3,
-            label="Period shortfall",
-        )
-        ax.axhline(0, color="gray", linewidth=0.7)
-        ax.set(
-            ylabel="USD millions / month",
-            title="Training consumes cash; external sales provide it",
-        )
-        ax.legend()
     elif view == "coverage":
         rates = [0.10, 0.13, 0.16, 0.17, 0.19, 0.22, 0.25]
         shares = [i * (1 - inputs.training_fraction) / 12 for i in range(13)]
