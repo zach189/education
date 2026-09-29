@@ -6,7 +6,7 @@ All 26 notebooks were run locally with outputs saved. Use **Read notebook** to s
 
 ## Ready
 
-Notebooks 1–4, calls and puts, option valuation, and the compute lab financing case study.
+Notebooks 1–4, forwards and swaps, calls and puts, option valuation, and the compute lab financing case study.
 
 | Notebook | Open and run | Saved outputs |
 |---|---|---|
@@ -14,6 +14,7 @@ Notebooks 1–4, calls and puts, option valuation, and the compute lab financing
 | 2. Cash Flows Through Time | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/02_cash_flows_through_time.ipynb) | [Read notebook](notebooks/02_cash_flows_through_time.ipynb) |
 | 3. From Rental Quotes to an Implied Forward Curve | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/03_rental_quotes_to_implied_forward_curve.ipynb) | [Read notebook](notebooks/03_rental_quotes_to_implied_forward_curve.ipynb) |
 | 4 / M1 — The Tenor Trade: Buying Long, Selling Short | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/04_the_tenor_trade.ipynb) | [Read notebook](notebooks/04_the_tenor_trade.ipynb) |
+| M2 — Forwards and swaps: agreeing on future prices | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/M2_forwards_and_swaps.ipynb) | [Read notebook](notebooks/M2_forwards_and_swaps.ipynb) |
 | M5 — Calls and puts: price protection with a premium | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/M5_calls_and_puts.ipynb) | [Read notebook](notebooks/M5_calls_and_puts.ipynb) |
 | M6 — Option valuation through replication | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/M6_option_valuation.ipynb) | [Read notebook](notebooks/M6_option_valuation.ipynb) |
 | Can a training lab support a USD 500 million GPU loan? | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/case_lab_gpu_financing.ipynb) | [Read notebook](notebooks/case_lab_gpu_financing.ipynb) |
@@ -33,7 +34,6 @@ These lessons have runnable examples and saved outputs, but remain works in prog
 | F7 — Renewal risk and obligations beyond the customer contract | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/F7_renewal_and_maturity_mismatch.ipynb) | [Read notebook](notebooks/F7_renewal_and_maturity_mismatch.ipynb) |
 | F8 — GPU ownership, leasing and resale value | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/F8_ownership_leasing_residual_value.ipynb) | [Read notebook](notebooks/F8_ownership_leasing_residual_value.ipynb) |
 | F9 — Cash waterfalls, reserves and investor returns | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/F9_waterfalls_reserves_returns.ipynb) | [Read notebook](notebooks/F9_waterfalls_reserves_returns.ipynb) |
-| M2 — Forwards and swaps: agreeing on future prices | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/M2_forwards_and_swaps.ipynb) | [Read notebook](notebooks/M2_forwards_and_swaps.ipynb) |
 | M3 — Basis Risk: When the Index Isn’t Your Price | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/M3_benchmark_basis_risk.ipynb) | [Read notebook](notebooks/M3_benchmark_basis_risk.ipynb) |
 | M4 — Price, demand and delivery scenarios | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/M4_price_quantity_scenarios.ipynb) | [Read notebook](notebooks/M4_price_quantity_scenarios.ipynb) |
 | M7 — Hedge collateral and liquidity | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/M7_hedge_collateral_liquidity.ipynb) | [Read notebook](notebooks/M7_hedge_collateral_liquidity.ipynb) |

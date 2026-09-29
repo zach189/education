@@ -10,7 +10,7 @@ All 26 existing notebooks passed fresh-kernel execution locally on 2026-09-29, w
 
 ## Ready and WIP
 
-**Ready:** notebooks 1–4 (Notebook 4 is M1), M5 calls and puts, M6 option valuation, and the [compute lab financing case study](case_lab_gpu_financing.ipynb). **WIP:** F1–F9, M2–M4, M7, and E1–E6. C1 remains planned. These release labels reflect the user's selected teaching readiness, independently of successful execution. All existing lessons have saved results; pending live presentation checks are not claimed as complete.
+**Ready:** notebooks 1–4 (Notebook 4 is M1), M2 forwards and swaps, M5 calls and puts, M6 option valuation, and the [compute lab financing case study](case_lab_gpu_financing.ipynb). **WIP:** F1–F9, M3–M4, M7, and E1–E6. C1 remains planned. These release labels reflect the user's selected teaching readiness, independently of successful execution. All existing lessons have saved results; pending live presentation checks are not claimed as complete.
 
 ## Audience and teaching conventions
 

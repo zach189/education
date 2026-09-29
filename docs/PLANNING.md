@@ -4,7 +4,7 @@
 
 The user authorized running every notebook, saving outputs, adding GitHub package installation in Colab, and publishing to `zach189/education`. All 26 existing notebooks passed fresh-kernel execution locally and have saved outputs. The first code cell installs the package in Colab; local execution reuses `.venv`. All 740 tests, Ruff checks, formatting checks, and mypy passed. Live Colab interaction remains unverified.
 
-**Ready:** notebooks 1–4 (4 is M1), M5 calls and puts, M6 option valuation, and the compute lab financing case study. **WIP:** all other existing lessons, including E1 compound options. C1 remains planned. Release readiness is the user's teaching selection, separate from execution success. See the [notebook index](../README.md) for Colab links and the [canonical roadmap](../notebooks/README.md) for prerequisites.
+**Ready:** notebooks 1–4 (4 is M1), M2 forwards and swaps, M5 calls and puts, M6 option valuation, and the compute lab financing case study. **WIP:** all other existing lessons, including E1 compound options. C1 remains planned. Release readiness is the user's teaching selection, separate from execution success. See the [notebook index](../README.md) for Colab links and the [canonical roadmap](../notebooks/README.md) for prerequisites.
 
 Earlier dated execution deferrals below are historical and superseded by this update. Live-presentation checks remain pending where not already recorded as complete.
 
