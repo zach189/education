@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING, Literal, TypedDict
 
 from .bridge_financing import BridgeInputs, BridgeSchedule
 from .cashflows import MonthlyCashFlow
-from .economics import MonthlyEconomics, compute_monthly_economics
+from .economics import MonthlyEconomics, _finite_number, compute_monthly_economics
 from .financing import FinancedCashFlow, FinancingInputs, LoanCashFlow
 from .forward_curves import ImpliedRentalBlock, RentalQuote
 
@@ -19,6 +19,7 @@ if TYPE_CHECKING:
     from matplotlib.figure import Figure
 
     from .lab_financing import LabInputs
+    from .option_valuation import BinomialTree
     from .risk_statistics import MonthlyPrice
     from .tenor_trade import ResellerCommitmentRow
     from .workload_costs import UsefulOutputCosts
@@ -2218,53 +2219,597 @@ def plot_lab_scenarios(scenarios: "Mapping[str, LabInputs]") -> "Figure":
     return fig
 
 
-def lab_training_explorer(inputs: "LabInputs") -> "VBox":
-    """Independent exact-value training control; invalid capacity edits recover."""
-    from dataclasses import replace
+def _control_number(name: str, value: float | str) -> float:
+    if isinstance(value, str):
+        raise TypeError(f"{name} must be numeric")
+    return _finite_number(name, value)
 
-    import ipywidgets as widgets
-    from IPython.display import clear_output, display
+
+def lab_training_explorer(inputs: "LabInputs") -> "VBox | None":
+    """Independent lab controls with reliable output updates and static fallback.
+
+    Preserve exact initial shares/rates; enforce LabInputs constraints through
+    model_lab. Invalid allocations replace the old chart until corrected.
+    Returns the panel without displaying it, preserving the existing interface.
+    """
+    from dataclasses import replace
 
     from .lab_financing import minimum_contract_fraction, model_lab
 
     model_lab(inputs)
-    control = widgets.BoundedFloatText(
-        value=inputs.training_fraction,
-        min=0,
-        max=1,
-        step=0.01,
-        description="Training share:",
-        style={"description_width": "initial"},
+
+    def render(values: Mapping[str, float | str]) -> tuple["Figure", str]:
+        scenario = replace(
+            inputs,
+            training_fraction=_control_number("training", values["Training share"]),
+            contracted_fraction=_control_number(
+                "contracted", values["Committed share"]
+            ),
+            spot_usd_per_gpu_hour=_control_number(
+                "spot price", values["Spot USD/GPU-hour"]
+            ),
+            nominal_annual_rate=_control_number(
+                "loan rate", values["Annual loan rate fraction"]
+            ),
+        )
+        result = model_lab(scenario)
+        threshold = minimum_contract_fraction(scenario)
+        coverage = (
+            "N/A" if result.minimum_dscr is None else f"{result.minimum_dscr:.2f}×"
+        )
+        required = "Infeasible" if threshold is None else f"{threshold:.2%}"
+        summary = (
+            f"Minimum DSCR: **{coverage}** (target {scenario.minimum_dscr:.2f}×). "
+            f"Minimum committed share at this training allocation: **{required}**. "
+            f"Additional cash beyond purchase equity: **USD {result.additional_cash_usd / 1e6:.2f}m**. "
+            "Shares use usable capacity; training plus commitments cannot exceed 1."
+        )
+        return plot_lab_case(scenario, view=str(values["View"])), summary
+
+    return _figure_explorer(
+        {
+            "Training share": inputs.training_fraction,
+            "Committed share": inputs.contracted_fraction,
+            "Spot USD/GPU-hour": inputs.spot_usd_per_gpu_hour,
+            "Annual loan rate fraction": inputs.nominal_annual_rate,
+            "View": "cash",
+        },
+        render,
+        choices={"View": ("cash", "capacity", "collateral")},
+        display_panel=False,
+    )
+
+
+# Ready-lesson explorers keep widget plumbing and chart assembly out of notebooks.
+def _figure_explorer(
+    inputs: Mapping[str, float | str],
+    render: "Callable[[Mapping[str, float | str]], tuple[Figure, str]]",
+    *,
+    choices: Mapping[str, Sequence[str]] | None = None,
+    display_panel: bool = True,
+) -> "VBox | None":
+    """Independent controls, reset, explicit output updates and static fallback."""
+    import base64
+    from io import BytesIO
+
+    import matplotlib.pyplot as plt
+    from IPython.display import Markdown, display
+
+    source = dict(inputs)
+    figure, summary = render(source.copy())  # Validate before creating controls.
+    try:
+        import ipywidgets as widgets
+    except ImportError:
+        display(Markdown(summary))
+        display(figure)
+        plt.close(figure)
+        print("Widgets unavailable: edit the assumptions and rerun the cells.")
+        return None
+    plt.close(figure)
+    controls = {}
+    for name, value in source.items():
+        settings = dict(description=name, style={"description_width": "initial"})
+        if choices and name in choices:
+            controls[name] = widgets.Dropdown(
+                options=tuple(choices[name]), value=value, **settings
+            )
+        elif isinstance(value, str):
+            raise ValueError("text controls require choices")
+        else:
+            controls[name] = widgets.FloatText(value=value, **settings)
+    reset = widgets.Button(
+        description="Reset assumptions",
+        icon="undo",
+        layout=widgets.Layout(width="180px"),
     )
     output = widgets.Output()
+    resetting = False
 
     def update(change: object = None) -> None:
-        with output:
-            clear_output(wait=True)
+        if resetting:
+            return
+        try:
+            fig, text = render({name: c.value for name, c in controls.items()})
             try:
-                scenario = replace(inputs, training_fraction=control.value)
-                result = model_lab(scenario)
-                threshold = minimum_contract_fraction(scenario)
-                coverage = (
-                    "N/A"
-                    if result.minimum_dscr is None
-                    else f"{result.minimum_dscr:.2f}×"
-                )
-                print(
-                    f"Minimum DSCR: {coverage}; additional cash: USD {result.additional_cash_usd:,.0f}"
-                )
-                print(
-                    "Required contracted share: "
-                    + (
-                        "infeasible at this training allocation"
-                        if threshold is None
-                        else f"{threshold:.2%}"
-                    )
-                )
-                display(plot_lab_case(scenario, view="cash"))
-            except (ValueError, TypeError) as exc:
-                print(f"Adjust the training share: {exc}")
+                with BytesIO() as buffer:
+                    fig.savefig(buffer, format="png", dpi=110)
+                    png = base64.b64encode(buffer.getvalue()).decode("ascii")
+            finally:
+                plt.close(fig)
+            output.outputs = (
+                {
+                    "output_type": "display_data",
+                    "data": {"text/markdown": text},
+                    "metadata": {},
+                },
+                {
+                    "output_type": "display_data",
+                    "data": {"image/png": png},
+                    "metadata": {},
+                },
+            )
+        except (TypeError, ValueError) as error:
+            output.outputs = (
+                {
+                    "output_type": "display_data",
+                    "data": {
+                        "text/markdown": f"Check the inputs: {error}. Correct them or reset to restore the chart."
+                    },
+                    "metadata": {},
+                },
+            )
 
-    control.observe(update, names="value")
+    def restore(button: object) -> None:
+        nonlocal resetting
+        resetting = True
+        try:
+            for name, value in source.items():
+                controls[name].value = value
+        finally:
+            resetting = False
+        update()
+
+    for control in controls.values():
+        control.observe(update, names="value")
+    reset.on_click(restore)
     update()
-    return widgets.VBox([control, output])
+    panel = widgets.VBox([*controls.values(), reset, output])
+    if display_panel:
+        display(panel)
+    return panel
+
+
+def _benchmark_grid(strike: float, basis: float) -> tuple[float, ...]:
+    """Include the payoff kink exactly; exclude negative physical prices."""
+    from .financing import _nonnegative
+
+    strike = _nonnegative("strike_usd_per_gpu_hour", strike)
+    basis = _control_number("basis_usd_per_gpu_hour", basis)
+    low = max(0.0, -basis)
+    high = _control_number("chart upper price", max(10.0, 2 * strike, low + 10))
+    grid = {low + (high - low) * i / 80 for i in range(81)}
+    if low <= strike <= high:
+        grid.add(strike)
+    return tuple(sorted(grid))
+
+
+def plot_forward_hedge(
+    *,
+    physical_gpu_hours: float,
+    hedge_gpu_hours: float,
+    strike_usd_per_gpu_hour: float,
+    side: Literal["buyer", "seller"] = "buyer",
+) -> "Figure":
+    """M2: matched benchmark/physical price, same-date cash, no premium or PV.
+
+    Show unhedged and hedged buyer cost / seller receipts plus signed settlement.
+    Quantities and strike are finite nonnegative; overhedging remains visible.
+    Validation and contract signs come from the hedging calculation module.
+    """
+    import matplotlib.pyplot as plt
+    from matplotlib.ticker import StrMethodFormatter
+
+    from .hedging import combined_physical_and_hedge_cash_flows, forward_settlements_usd
+
+    prices = _benchmark_grid(strike_usd_per_gpu_hour, 0)
+    unhedged, hedged, cash = [], [], []
+    for price in prices:
+        settlements = forward_settlements_usd(
+            benchmark_usd_per_gpu_hour=[price],
+            strike_usd_per_gpu_hour=strike_usd_per_gpu_hour,
+            hedge_gpu_hours=[hedge_gpu_hours],
+            settlement_months=[1],
+            side=side,
+        )
+        row = combined_physical_and_hedge_cash_flows(
+            physical_usd_per_gpu_hour=[price],
+            physical_gpu_hours=[physical_gpu_hours],
+            physical_payment_months=[1],
+            settlements=settlements,
+            side=side,
+        )[-1]
+        sign = -1 if side == "buyer" else 1
+        unhedged.append(sign * row.physical_cash_usd)
+        hedged.append(sign * row.net_cash_usd)
+        cash.append(row.hedge_cash_usd)
+    fig, axes = plt.subplots(1, 2, figsize=(11, 4), layout="constrained")
+    measure = "Buyer cost" if side == "buyer" else "Seller receipts"
+    axes[0].plot(prices, unhedged, "--", color="#777777", label="Unhedged physical")
+    axes[0].plot(prices, hedged, color="#246b8e", label="Physical + forward")
+    axes[0].set_title(f"{measure}: does the hedge remove price exposure?")
+    axes[1].plot(prices, cash, color="#a35d21", label=f"{side.title()} hedge cash")
+    axes[1].set_title("Positive = received; negative = paid")
+    for ax in axes:
+        ax.axvline(strike_usd_per_gpu_hour, color="gray", linestyle=":", label="Strike")
+        ax.axhline(0, color="gray", linewidth=0.7)
+        ax.set(xlabel="Settlement benchmark (USD/GPU-hour)", ylabel="USD")
+        ax.yaxis.set_major_formatter(StrMethodFormatter("{x:,.0f}"))
+        ax.grid(alpha=0.2)
+        ax.legend(fontsize=8)
+    plt.close(fig)
+    return fig
+
+
+def explore_forward_hedge(
+    *,
+    physical_gpu_hours: float,
+    hedge_gpu_hours: float,
+    strike_usd_per_gpu_hour: float,
+    side: Literal["buyer", "seller"] = "buyer",
+) -> "VBox | None":
+    """M2 exact-value controls for strike, exposure and hedge size, and side.
+
+    Inputs follow plot_forward_hedge; instances own their initial values.
+    """
+
+    def render(values: Mapping[str, float | str]) -> tuple["Figure", str]:
+        selected = values["Side"]
+        if selected not in ("buyer", "seller"):
+            raise ValueError("side must be buyer or seller")
+        fig = plot_forward_hedge(
+            physical_gpu_hours=_control_number(
+                "Physical GPU-hours", values["Physical GPU-hours"]
+            ),
+            hedge_gpu_hours=_control_number(
+                "Hedge GPU-hours", values["Hedge GPU-hours"]
+            ),
+            strike_usd_per_gpu_hour=_control_number(
+                "Strike USD/GPU-hour", values["Strike USD/GPU-hour"]
+            ),
+            side="buyer" if selected == "buyer" else "seller",
+        )
+        note = "Matched quantities flatten the combined outcome; partial hedges leave a slope."
+        if _control_number(
+            "Hedge GPU-hours", values["Hedge GPU-hours"]
+        ) > _control_number("Physical GPU-hours", values["Physical GPU-hours"]):
+            note = "The hedge exceeds physical exposure: the combined slope reverses."
+        return fig, note + " Cash settlement does not provide physical capacity."
+
+    return _figure_explorer(
+        {
+            "Side": side,
+            "Physical GPU-hours": physical_gpu_hours,
+            "Hedge GPU-hours": hedge_gpu_hours,
+            "Strike USD/GPU-hour": strike_usd_per_gpu_hour,
+        },
+        render,
+        choices={"Side": ("buyer", "seller")},
+    )
+
+
+def plot_option_protection(
+    *,
+    kind: Literal["call", "put"],
+    physical_gpu_hours: float,
+    covered_gpu_hours: float,
+    strike_usd_per_gpu_hour: float,
+    premium_usd_per_gpu_hour: float,
+    basis_usd_per_gpu_hour: float = 0.0,
+) -> "Figure":
+    """M5 contractual outcomes: separate option cash from the physical business.
+
+    Calls protect a buyer; puts protect a seller. Both are long options.
+    Premium per covered hour is paid at inception; plotted totals add nominal
+    cash across dates without discounting. Physical price is benchmark + basis.
+    Finite nonnegative quantities, strike and premium; basis may be negative,
+    but displayed physical prices stay nonnegative. No market valuation.
+    """
+    import matplotlib.pyplot as plt
+    from matplotlib.ticker import StrMethodFormatter
+
+    from .hedging import Settlement, combined_physical_and_hedge_cash_flows
+    from .options import option_cash_flows
+
+    prices = _benchmark_grid(strike_usd_per_gpu_hour, basis_usd_per_gpu_hour)
+    gross, option_net, physical, protected = [], [], [], []
+    for price in prices:
+        option = option_cash_flows(
+            kind=kind,
+            settlement_price_usd_per_gpu_hour=price,
+            strike_usd_per_gpu_hour=strike_usd_per_gpu_hour,
+            covered_gpu_hours=covered_gpu_hours,
+            premium_usd_per_gpu_hour=premium_usd_per_gpu_hour,
+            expiry_month=1,
+        )
+        row = combined_physical_and_hedge_cash_flows(
+            physical_usd_per_gpu_hour=[price + basis_usd_per_gpu_hour],
+            physical_gpu_hours=[physical_gpu_hours],
+            physical_payment_months=[1],
+            settlements=[Settlement(1, option[-1].payoff_cash_usd)],
+            side="buyer" if kind == "call" else "seller",
+        )[-1]
+        sign = -1 if kind == "call" else 1
+        gross.append(option[-1].payoff_cash_usd)
+        option_net.append(option[-1].payoff_cash_usd + option[0].premium_cash_usd)
+        physical.append(sign * row.physical_cash_usd)
+        protected.append(sign * (row.net_cash_usd + option[0].premium_cash_usd))
+    fig, axes = plt.subplots(1, 2, figsize=(11, 4.2), layout="constrained")
+    axes[0].plot(prices, gross, label="Gross option payoff", color="#246b8e")
+    axes[0].plot(prices, option_net, label="Payoff less premium", color="#a35d21")
+    axes[0].set_title(f"Long {kind}: premium is paid even if payoff is zero")
+    axes[1].plot(prices, physical, "--", color="#777777", label="Unprotected physical")
+    axes[1].plot(
+        prices, protected, color="#246b8e", label="Protected, including premium"
+    )
+    axes[1].set_title("Buyer total cost" if kind == "call" else "Seller total receipts")
+    for ax in axes:
+        ax.axvline(strike_usd_per_gpu_hour, color="gray", linestyle=":", label="Strike")
+        ax.axhline(0, color="gray", linewidth=0.7)
+        ax.set(xlabel="Expiry benchmark (USD/GPU-hour)", ylabel="Nominal USD")
+        ax.yaxis.set_major_formatter(StrMethodFormatter("{x:,.0f}"))
+        ax.grid(alpha=0.2)
+        ax.legend(fontsize=8)
+    plt.close(fig)
+    return fig
+
+
+def explore_option_protection(
+    *,
+    kind: Literal["call", "put"],
+    physical_gpu_hours: float,
+    covered_gpu_hours: float,
+    strike_usd_per_gpu_hour: float,
+    premium_usd_per_gpu_hour: float,
+    basis_usd_per_gpu_hour: float = 0.0,
+) -> "VBox | None":
+    """M5 controls follow plot_option_protection; all terms remain hypothetical."""
+
+    def render(values: Mapping[str, float | str]) -> tuple["Figure", str]:
+        selected = values["Option"]
+        if selected not in ("call", "put"):
+            raise ValueError("kind must be call or put")
+        fig = plot_option_protection(
+            kind="call" if selected == "call" else "put",
+            physical_gpu_hours=_control_number(
+                "Physical GPU-hours", values["Physical GPU-hours"]
+            ),
+            covered_gpu_hours=_control_number(
+                "Covered GPU-hours", values["Covered GPU-hours"]
+            ),
+            strike_usd_per_gpu_hour=_control_number(
+                "Strike USD/GPU-hour", values["Strike USD/GPU-hour"]
+            ),
+            premium_usd_per_gpu_hour=_control_number(
+                "Premium USD/covered hour", values["Premium USD/covered hour"]
+            ),
+            basis_usd_per_gpu_hour=_control_number(
+                "Physical minus benchmark USD/hour",
+                values["Physical minus benchmark USD/hour"],
+            ),
+        )
+        return fig, (
+            "Compare the protected line with the dashed physical outcome. Partial coverage "
+            "leaves price exposure; basis shifts the physical bill or receipts. "
+            "Changing call/put keeps the entered premium; it does not calculate a fair premium."
+        )
+
+    return _figure_explorer(
+        {
+            "Option": kind,
+            "Physical GPU-hours": physical_gpu_hours,
+            "Covered GPU-hours": covered_gpu_hours,
+            "Strike USD/GPU-hour": strike_usd_per_gpu_hour,
+            "Premium USD/covered hour": premium_usd_per_gpu_hour,
+            "Physical minus benchmark USD/hour": basis_usd_per_gpu_hour,
+        },
+        render,
+        choices={"Option": ("call", "put")},
+    )
+
+
+def plot_option_tree(tree: "BinomialTree") -> "Figure":
+    """M6 node diagram: proxy prices and backward-calculated option values.
+
+    Accept a validated one- to three-step tree from the valuation engine.
+    Node height denotes up/down history, not a numerical price axis.
+    """
+    import matplotlib.pyplot as plt
+
+    from .option_valuation import BinomialTree
+
+    if not isinstance(tree, BinomialTree):
+        raise TypeError("tree must be a BinomialTree")
+    steps = len(tree.prices_usd_per_unit) - 1
+    if not 1 <= steps <= 3:
+        raise ValueError("the teaching diagram supports one to three steps")
+    fig, ax = plt.subplots(figsize=(10, 4.8), layout="constrained")
+    for step, prices in enumerate(tree.prices_usd_per_unit):
+        for ups, price in enumerate(prices):
+            x, y = step * tree.step_years, 2 * ups - step
+            if step < steps:
+                for change in (-1, 1):
+                    ax.plot(
+                        [x, x + tree.step_years],
+                        [y, y + change],
+                        color="#b2c6d1",
+                        zorder=1,
+                    )
+            ax.text(
+                x,
+                y,
+                f"Proxy USD {price:.2f}\nOption USD {tree.option_values_usd[step][ups]:.4f}",
+                ha="center",
+                va="center",
+                fontsize=10,
+                zorder=2,
+                bbox={"boxstyle": "round,pad=0.4", "fc": "#edf5f7", "ec": "#246b8e"},
+            )
+    ax.set(
+        xticks=[i * tree.step_years for i in range(steps + 1)],
+        xlabel="Years from inception",
+        yticks=[],
+        title=f"Conditional value per proxy unit; pricing up weight {tree.pricing_up_weight:.4f}\n"
+        "Terminal payoffs on the right; discounted option values back to the left",
+    )
+    ax.set_xlim(-0.35 * tree.step_years, (steps + 0.35) * tree.step_years)
+    ax.set_ylim(-steps - 0.6, steps + 0.6)
+    for side in ("left", "right", "top"):
+        ax.spines[side].set_visible(False)
+    plt.close(fig)
+    return fig
+
+
+def explore_option_valuation(
+    *,
+    kind: Literal["call", "put"],
+    spot_usd_per_unit: float,
+    strike_usd_per_unit: float,
+    up_factor: float,
+    down_factor: float,
+    effective_annual_rate: float,
+    step_years: float,
+) -> "VBox | None":
+    """M6 one-step replication explorer, with an explicitly different two-step expiry.
+
+    Bounds and ideal trading assumptions follow one_step_replication. Reject
+    invalid no-arbitrage inputs rather than clipping weights. Values are per
+    normalized proxy unit, never a compute market quote or business forecast.
+    """
+    from .option_valuation import binomial_european_option_tree, one_step_replication
+
+    def render(values: Mapping[str, float | str]) -> tuple["Figure", str]:
+        selected = values["Option"]
+        if selected not in ("call", "put"):
+            raise ValueError("kind must be call or put")
+        args = dict(
+            spot_usd_per_unit=_control_number(
+                "Proxy spot USD/unit", values["Proxy spot USD/unit"]
+            ),
+            strike_usd_per_unit=_control_number(
+                "Strike USD/unit", values["Strike USD/unit"]
+            ),
+            up_factor=_control_number("Up factor", values["Up factor"]),
+            down_factor=_control_number("Down factor", values["Down factor"]),
+            effective_annual_rate=_control_number(
+                "Effective annual rate fraction",
+                values["Effective annual rate fraction"],
+            ),
+            step_years=_control_number("Years per step", values["Years per step"]),
+        )
+        kind_value: Literal["call", "put"] = "call" if selected == "call" else "put"
+        result = one_step_replication(kind=kind_value, **args)
+        tree = binomial_european_option_tree(kind=kind_value, **args, steps=2)
+        summary = (
+            f"**One-step expiry {args['step_years']:g} years:** value USD {result.value_usd:.7f}/unit; "
+            f"delta {result.delta_units:.5f} units; initial cash USD {result.cash_position_usd:.7f} "
+            "(negative = borrowing). "
+            f"**Two-step expiry {2 * args['step_years']:g} years:** "
+            f"value USD {tree.option_values_usd[0][0]:.7f}/unit. "
+            "These are different expiries. Pricing weights are not forecast probabilities."
+        )
+        return plot_option_tree(tree), summary
+
+    return _figure_explorer(
+        {
+            "Option": kind,
+            "Proxy spot USD/unit": spot_usd_per_unit,
+            "Strike USD/unit": strike_usd_per_unit,
+            "Up factor": up_factor,
+            "Down factor": down_factor,
+            "Effective annual rate fraction": effective_annual_rate,
+            "Years per step": step_years,
+        },
+        render,
+        choices={"Option": ("call", "put")},
+    )
+
+
+def show_lab_scenario_comparison(
+    scenarios: "Mapping[str, LabInputs]",
+    *,
+    default_month: int = 24,
+) -> None:
+    """Render case outcomes from the lab model; USD million units are explicit."""
+    from .lab_financing import liquidation_stress, model_lab
+
+    rows: list[list[str | float | int | None]] = []
+    for label, assumptions in scenarios.items():
+        modeled = model_lab(assumptions)
+        _, claim, recovery = liquidation_stress(
+            assumptions, default_month=default_month
+        )
+        rows.append(
+            [
+                label,
+                modeled.additional_cash_usd / 1e6,
+                None
+                if modeled.minimum_dscr is None
+                else f"{modeled.minimum_dscr:.2f}×",
+                modeled.months[-1].closing_debt_usd / 1e6,
+                None if claim == 0 else f"{recovery / claim:.1%}",
+            ]
+        )
+    show_finance_table(
+        [
+            "Scenario",
+            "Extra cash USD m",
+            "Min DSCR",
+            "Scheduled ending debt USD m",
+            f"Month-{default_month} equipment recovery",
+        ],
+        rows,
+    )
+
+
+def show_lab_decision_summary(inputs: "LabInputs", *, default_month: int = 24) -> None:
+    """Render the lab case decision outputs without notebook Markdown assembly."""
+    from .lab_financing import liquidation_stress, minimum_contract_fraction, model_lab
+
+    result = model_lab(inputs)
+    minimum_share = minimum_contract_fraction(inputs)
+    training = (
+        inputs.gpu_count
+        * inputs.hours_per_month
+        * inputs.availability_fraction
+        * inputs.training_fraction
+    )
+    show_finance_table(
+        ["Decision output", "Base case"],
+        [
+            [
+                "Minimum committed share at fixed training",
+                "Infeasible" if minimum_share is None else f"{minimum_share:.2%}",
+            ],
+            [
+                "Retained training",
+                f"{inputs.training_fraction:.0%}; {training / 1e6:.3f}m GPU-hours/month",
+            ],
+            ["Cash-only loan limit", f"USD {result.supportable_loan_usd / 1e6:.2f}m"],
+            [
+                "Loan within proposed advance ceiling",
+                f"USD {min(inputs.equipment_usd * inputs.advance_fraction, result.supportable_loan_usd) / 1e6:.2f}m",
+            ],
+            [
+                "Additional cash beyond purchase equity",
+                f"USD {result.additional_cash_usd / 1e6:.2f}m",
+            ],
+            [
+                "Operating funding gap after committed support",
+                f"USD {result.uncovered_cash_usd / 1e6:.2f}m",
+            ],
+            [
+                f"Month-{default_month} equipment-only recovery",
+                f"USD {liquidation_stress(inputs, default_month=default_month)[2] / 1e6:.2f}m",
+            ],
+        ],
+    )

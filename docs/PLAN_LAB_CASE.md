@@ -48,3 +48,8 @@ live presentation acceptance in this pass. Keep readable worked results in prose
   in untouched F3/F4/F6/F7/F8 static tests that require empty outputs despite their
   existing saved outputs. Preserved those notebooks and tests.
 - Execution, saved notebook plots and live widget presentation remain deferred.
+
+
+## Ready presentation update — 2026-09-29
+
+See the [Ready notebook review](READY_NOTEBOOK_REVIEW.md) for updated chart/control behavior, package boundaries, fresh-kernel outputs, automated checks, and live-check limitations. This update supersedes the historical execution deferrals above.

@@ -62,3 +62,8 @@ Reviewed all eight subsection pairs against the spec and M2–M4. Direct call/pu
 37 targeted option, market-presentation and financing-presentation tests passed. Tests cover below/at/above strike, premium timing and long/short signs, cap/floor, partial/basis exposure, zero boundaries and invalid/overflow inputs; direct chart rendering and dropdown changes, invalid-edit recovery and input independence passed. Static notebook schema/structure/AST checks passed without executing cells. Repository-wide Ruff lint/format checks and strict mypy (17 source files) passed.
 
 The user requested no notebook execution or repeated execution-permission prompts. Validation calls calculators and presentation helpers directly and checks notebook schema/syntax without executing cells. Fresh-kernel execution, saved runtime outputs and live Jupyter/Colab checks remain deferred. This is not a claim of full presentation verification.
+
+
+## Ready presentation update — 2026-09-29
+
+See the [Ready notebook review](READY_NOTEBOOK_REVIEW.md) for updated chart/control behavior, package boundaries, fresh-kernel outputs, automated checks, and live-check limitations. This update supersedes the historical execution deferrals above.

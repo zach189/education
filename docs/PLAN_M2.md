@@ -62,3 +62,8 @@ Reviewed all eight planned subsections after implementation: fixed physical deli
 14 settlement/cash tests pass. Headless price-axis, partial-coverage, precision and control-recovery tests and static notebook checks pass; shared finance presentation tests also pass. Strict mypy and lint pass. CME forward/futures and cash-timing primary pages were inspected; cited claims do not import exchange margin rules into OTC terms.
 
 The user requested no notebook execution or repeated execution-permission prompts. Validation calls calculators and presentation helpers directly and checks notebook schema/syntax without executing cells. Fresh-kernel execution, saved runtime outputs and live Jupyter/Colab checks remain deferred. This is not a claim of full presentation verification.
+
+
+## Ready presentation update — 2026-09-29
+
+See the [Ready notebook review](READY_NOTEBOOK_REVIEW.md) for updated chart/control behavior, package boundaries, fresh-kernel outputs, automated checks, and live-check limitations. This update supersedes the historical execution deferrals above.

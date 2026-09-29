@@ -12,6 +12,8 @@ All 26 existing notebooks passed fresh-kernel execution locally on 2026-09-29, w
 
 **Ready:** notebooks 1–4 (Notebook 4 is M1), M2 forwards and swaps, M5 calls and puts, M6 option valuation, and the [compute lab financing case study](case_lab_gpu_financing.ipynb). **WIP:** F1–F9, M3–M4, M7, and E1–E6. C1 remains planned. These release labels reflect the user's selected teaching readiness, independently of successful execution. All existing lessons have saved results; pending live presentation checks are not claimed as complete.
 
+The [Ready notebook visualization review](../docs/READY_NOTEBOOK_REVIEW.md) records the chart/control audit, package cleanup, refreshed outputs, and precise verification scope.
+
 ## Audience and teaching conventions
 
 F1–F9 and M1–M7 have completed a [language review](../PLAIN_LANGUAGE_REVIEW.md) for adult readers new to compute finance: direct business examples, clear definitions and explanations after each worked result. The tone is professional and accessible, without child-oriented analogies. That prose-only pass preserved code and saved outputs; later lesson revisions and execution/live-presentation status are tracked individually below.

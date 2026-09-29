@@ -193,3 +193,8 @@ interest-only balloon comparison and equipment-only delayed liquidation stress.
 Unverified prompt terms are distinguished from hypothetical inputs. No external
 facility or lender claims. Schema/syntax and direct helper checks only; execution,
 saved generated outputs and live checks deferred.
+
+
+## Ready notebook presentation review — 2026-09-29
+
+The [presentation review](READY_NOTEBOOK_REVIEW.md) covers all eight Ready lessons, improvements to M2/M5/M6 and the lab case, and completed checks. The canonical roadmap still controls release membership. Chart and widget mechanics stay in `liquid_compute.education`; existing calculators retain ownership.
