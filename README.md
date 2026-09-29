@@ -70,4 +70,4 @@ The Colab setup cell leaves the local environment unchanged. The reusable calcul
 .venv/bin/python scripts/validate_notebook.py notebooks/01_compute_business.ipynb
 ```
 
-The validator executes a notebook in a fresh kernel and saves its outputs. Pass any notebook path to validate that lesson. [Planning](PLANNING.md) documents calculation ownership and lesson specifications; [project guidance](AGENTS.md) defines teaching conventions. Examples are hypothetical unless explicitly sourced.
+The validator executes a notebook in a fresh kernel and saves its outputs. Pass any notebook path to validate that lesson. [Planning](docs/PLANNING.md) documents calculation ownership and lesson specifications; [project guidance](AGENTS.md) defines teaching conventions. Examples are hypothetical unless explicitly sourced.

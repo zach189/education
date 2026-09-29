@@ -693,12 +693,12 @@ def test_complete_market_elective_inventory_and_document_links():
     docs = [
         ROOT / "README.md",
         ROOT / "notebooks/README.md",
-        ROOT / "PLANNING.md",
+        ROOT / "docs/PLANNING.md",
         ROOT / "MARKET_ELECTIVES_REVIEW.md",
     ]
     for lesson, filename in EXPECTED_TRACK_FILES.items():
         assert f"]({filename})" in roadmap
-        plan = ROOT / ("PLAN_04.md" if lesson == "M1" else f"PLAN_{lesson}.md")
+        plan = ROOT / "docs" / ("PLAN_04.md" if lesson == "M1" else f"PLAN_{lesson}.md")
         record = plan.read_text()
         assert "## Implementation and coherence review" in record
         assert "deferred" in record

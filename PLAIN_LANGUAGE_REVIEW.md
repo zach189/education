@@ -29,7 +29,7 @@ Each lesson introduces necessary terminology in context without assuming prior f
 | M6 | An asset-and-borrowing portfolio that matches option payoffs explains replication. Half-unit ownership and borrowed cash are worked through in both outcomes. Pricing weights differ from beliefs; model assumptions do not establish compute tradability. |
 | M7 | Interim hedge payments before customer collection explain liquidity. Returned margin, actual variation settlements and separate private-forward collateral remain distinct; later collection does not falsely increase the example's peak funding need. |
 
-M1 was subsequently revised against a new user-supplied teaching specification; see [PLAN_04.md](PLAN_04.md). The preservation checks below describe the earlier prose-only pass, not that later calculation and notebook revision.
+M1 was subsequently revised against a new user-supplied teaching specification; see [PLAN_04.md](docs/PLAN_04.md). The preservation checks below describe the earlier prose-only pass, not that later calculation and notebook revision.
 
 ## Verification
 

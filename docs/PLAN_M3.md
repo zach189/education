@@ -1,11 +1,11 @@
 # M3: Basis Risk: When the Index Isn’t Your Price
 
-> Status update (2026-09-29): all existing notebooks now have saved outputs from successful local fresh-kernel execution, with Colab setup cells and links. Earlier execution deferrals below are historical. Live Colab interaction remains unverified. See the [canonical roadmap](notebooks/README.md) for Ready/WIP status and prerequisites. C1 remains planned.
+> Status update (2026-09-29): all existing notebooks now have saved outputs from successful local fresh-kernel execution, with Colab setup cells and links. Earlier execution deferrals below are historical. Live Colab interaction remains unverified. See the [canonical roadmap](../notebooks/README.md) for Ready/WIP status and prerequisites. C1 remains planned.
 
 **Status:** Revised source, calculators and tests complete; fresh-kernel execution passed and outputs saved. Local rendered tables and chart inspected; live widget updates remain unverified due to the local Jupyter connection issue described below. **Prerequisite:** M2.
-**Notebook:** [notebooks/M3_benchmark_basis_risk.ipynb](notebooks/M3_benchmark_basis_risk.ipynb).
+**Notebook:** [notebooks/M3_benchmark_basis_risk.ipynb](../notebooks/M3_benchmark_basis_risk.ipynb).
 
-The [canonical roadmap](notebooks/README.md) controls lesson status; [PLANNING.md](PLANNING.md) controls shared calculation ownership. The user's attached M3 request supersedes this lesson's earlier provider/time/quantity experiment outline and explicitly authorizes M3 execution. Other lessons retain their own verification scope. Colab verification remains deferred.
+The [canonical roadmap](../notebooks/README.md) controls lesson status; [PLANNING.md](PLANNING.md) controls shared calculation ownership. The user's attached M3 request supersedes this lesson's earlier provider/time/quantity experiment outline and explicitly authorizes M3 execution. Other lessons retain their own verification scope. Colab verification remains deferred.
 
 ## Learning decision and scope
 

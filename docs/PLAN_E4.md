@@ -1,11 +1,11 @@
 # E4: Floating-Rate Financing and Interest-Rate Hedging — implementation plan
 
-> Status update (2026-09-29): all existing notebooks now have saved outputs from successful local fresh-kernel execution, with Colab setup cells and links. Earlier execution deferrals below are historical. Live Colab interaction remains unverified. See the [canonical roadmap](notebooks/README.md) for Ready/WIP status and prerequisites. C1 remains planned.
+> Status update (2026-09-29): all existing notebooks now have saved outputs from successful local fresh-kernel execution, with Colab setup cells and links. Earlier execution deferrals below are historical. Live Colab interaction remains unverified. See the [canonical roadmap](../notebooks/README.md) for Ready/WIP status and prerequisites. C1 remains planned.
 
 **Status:** Created/tested; optional elective. Coherence reviewed; execution/live acceptance deferred by user instruction. **Prerequisites:** F4 and M2.
-**Notebook:** [notebooks/E4_floating_rate_financing.ipynb](notebooks/E4_floating_rate_financing.ipynb).
+**Notebook:** [notebooks/E4_floating_rate_financing.ipynb](../notebooks/E4_floating_rate_financing.ipynb).
 
-Read the [canonical roadmap](notebooks/README.md), [shared planning conventions](PLANNING.md), and [project guidance](AGENTS.md). Foundation plans remain implementation records; this document specifies only the new lesson or unfinished work.
+Read the [canonical roadmap](../notebooks/README.md), [shared planning conventions](PLANNING.md), and [project guidance](../AGENTS.md). Foundation plans remain implementation records; this document specifies only the new lesson or unfinished work.
 
 ## Learning decision, assumptions, and worked example
 

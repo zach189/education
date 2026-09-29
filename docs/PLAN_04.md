@@ -1,11 +1,11 @@
 # M1: The Tenor Trade: Buying Long, Selling Short
 
-> Status update (2026-09-29): all existing notebooks now have saved outputs from successful local fresh-kernel execution, with Colab setup cells and links. Earlier execution deferrals below are historical. Live Colab interaction remains unverified. See the [canonical roadmap](notebooks/README.md) for Ready/WIP status and prerequisites. C1 remains planned.
+> Status update (2026-09-29): all existing notebooks now have saved outputs from successful local fresh-kernel execution, with Colab setup cells and links. Earlier execution deferrals below are historical. Live Colab interaction remains unverified. See the [canonical roadmap](../notebooks/README.md) for Ready/WIP status and prerequisites. C1 remains planned.
 
 **Status:** Revised source, calculations and presentation checks complete; fresh-kernel execution passed and outputs saved. Live Jupyter interaction and hosted Colab acceptance remain unverified. **Prerequisite:** Foundations 1–3.
-**Notebook:** [04_the_tenor_trade.ipynb](notebooks/04_the_tenor_trade.ipynb).
+**Notebook:** [04_the_tenor_trade.ipynb](../notebooks/04_the_tenor_trade.ipynb).
 
-The [canonical roadmap](notebooks/README.md) controls status. The [planning index](PLANNING.md) controls calculation ownership. This specification supersedes the prior fully contracted first-year/two-year-tail lesson, which changed the article's underlying trade. Existing tail APIs and regression tests remain compatible for other callers.
+The [canonical roadmap](../notebooks/README.md) controls status. The [planning index](PLANNING.md) controls calculation ownership. This specification supersedes the prior fully contracted first-year/two-year-tail lesson, which changed the article's underlying trade. Existing tail APIs and regression tests remain compatible for other callers.
 
 ## Decision and source distinction
 

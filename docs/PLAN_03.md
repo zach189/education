@@ -1,8 +1,8 @@
 # Notebook 3: From Rental Quotes to an Implied Forward Curve
 
-> Status update (2026-09-29): all existing notebooks now have saved outputs from successful local fresh-kernel execution, with Colab setup cells and links. Earlier execution deferrals below are historical. Live Colab interaction remains unverified. See the [canonical roadmap](notebooks/README.md) for Ready/WIP status and prerequisites. C1 remains planned.
+> Status update (2026-09-29): all existing notebooks now have saved outputs from successful local fresh-kernel execution, with Colab setup cells and links. Earlier execution deferrals below are historical. Live Colab interaction remains unverified. See the [canonical roadmap](../notebooks/README.md) for Ready/WIP status and prerequisites. C1 remains planned.
 
-**Status: implemented locally.** The [notebook](notebooks/03_rental_quotes_to_implied_forward_curve.ipynb) follows the [canonical roadmap](notebooks/README.md). Its next lesson is **Notebook 4 / M1: The Tenor Trade: Buying Long, Selling Short**, the first market-risk lesson. Forwards and swaps follow as M2; remaining market-risk lessons run through M7. Keep three shared foundation lessons, with financing accessible after Notebook 2. Notebook 4 is not implemented by this task.
+**Status: implemented locally.** The [notebook](../notebooks/03_rental_quotes_to_implied_forward_curve.ipynb) follows the [canonical roadmap](../notebooks/README.md). Its next lesson is **Notebook 4 / M1: The Tenor Trade: Buying Long, Selling Short**, the first market-risk lesson. Forwards and swaps follow as M2; remaining market-risk lessons run through M7. Keep three shared foundation lessons, with financing accessible after Notebook 2. Notebook 4 is not implemented by this task.
 
 ## Learning experience and defaults
 

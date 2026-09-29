@@ -1,11 +1,11 @@
 # F1: Financing a Compute Prepayment — implementation plan
 
-> Status update (2026-09-29): all existing notebooks now have saved outputs from successful local fresh-kernel execution, with Colab setup cells and links. Earlier execution deferrals below are historical. Live Colab interaction remains unverified. See the [canonical roadmap](notebooks/README.md) for Ready/WIP status and prerequisites. C1 remains planned.
+> Status update (2026-09-29): all existing notebooks now have saved outputs from successful local fresh-kernel execution, with Colab setup cells and links. Earlier execution deferrals below are historical. Live Colab interaction remains unverified. See the [canonical roadmap](../notebooks/README.md) for Ready/WIP status and prerequisites. C1 remains planned.
 
 **Status:** Implemented and verified locally; implementation record. **Prerequisites:** 1 and 2.
-**Notebook:** [Financing a Compute Prepayment](notebooks/F1_financing_a_compute_prepayment.ipynb).
+**Notebook:** [Financing a Compute Prepayment](../notebooks/F1_financing_a_compute_prepayment.ipynb).
 
-Read the [canonical roadmap](notebooks/README.md), [shared planning conventions](PLANNING.md), and [project guidance](AGENTS.md). This document records F1’s approved scope and completed implementation.
+Read the [canonical roadmap](../notebooks/README.md), [shared planning conventions](PLANNING.md), and [project guidance](../AGENTS.md). This document records F1’s approved scope and completed implementation.
 
 ## Learning decision, assumptions, and worked example
 

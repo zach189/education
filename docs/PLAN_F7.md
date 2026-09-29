@@ -1,11 +1,11 @@
 # F7: Renewal Risk and Maturity Mismatch — implementation plan
 
-> Status update (2026-09-29): all existing notebooks now have saved outputs from successful local fresh-kernel execution, with Colab setup cells and links. Earlier execution deferrals below are historical. Live Colab interaction remains unverified. See the [canonical roadmap](notebooks/README.md) for Ready/WIP status and prerequisites. C1 remains planned.
+> Status update (2026-09-29): all existing notebooks now have saved outputs from successful local fresh-kernel execution, with Colab setup cells and links. Earlier execution deferrals below are historical. Live Colab interaction remains unverified. See the [canonical roadmap](../notebooks/README.md) for Ready/WIP status and prerequisites. C1 remains planned.
 
 **Status:** Notebook and calculations created; automated calculation/plot checks and coherence review complete. Fresh-kernel execution and live presentation acceptance deferred by user instruction. **Prerequisites:** F3 and F4.
-**Notebook:** [notebooks/F7_renewal_and_maturity_mismatch.ipynb](notebooks/F7_renewal_and_maturity_mismatch.ipynb).
+**Notebook:** [notebooks/F7_renewal_and_maturity_mismatch.ipynb](../notebooks/F7_renewal_and_maturity_mismatch.ipynb).
 
-Read the [canonical roadmap](notebooks/README.md), [shared planning conventions](PLANNING.md), and [project guidance](AGENTS.md). Foundation plans remain implementation records; this document specifies only the new lesson or unfinished work.
+Read the [canonical roadmap](../notebooks/README.md), [shared planning conventions](PLANNING.md), and [project guidance](../AGENTS.md). Foundation plans remain implementation records; this document specifies only the new lesson or unfinished work.
 
 ## Learning decision, assumptions, and worked example
 

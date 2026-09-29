@@ -50,7 +50,7 @@ Earlier dated execution deferrals below are historical and superseded by this up
 
 ## Planning documents
 
-- `PLANNING.md` indexes every unfinished lesson and records shared conventions, source research gates, and calculation ownership. Read its overlap boundaries and the specific lesson plan before implementation. `PLAN_04.md` belongs to M1; other track plans use their IDs.
+- `docs/PLANNING.md` indexes every unfinished lesson and records shared conventions, source research gates, and calculation ownership. Read its overlap boundaries and the specific lesson plan before implementation. `docs/PLAN_04.md` belongs to M1; other track plans use their IDs.
 - F1 is implemented: reuse its verified notebook and loan engine instead of generating a second implementation. Its approved scope excludes customer-prepayment financing, which belongs to F2.
 - Plan links are not notebook availability. Mark a lesson implemented only after its tests, fresh-kernel execution and local presentation checks pass. Keep shared calculations under the owner identified in the planning index; later lessons should reuse them.
 

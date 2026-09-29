@@ -1,10 +1,10 @@
 # Notebook 1 implementation plan
 
-> Status update (2026-09-29): all existing notebooks now have saved outputs from successful local fresh-kernel execution, with Colab setup cells and links. Earlier execution deferrals below are historical. Live Colab interaction remains unverified. See the [canonical roadmap](notebooks/README.md) for Ready/WIP status and prerequisites. C1 remains planned.
+> Status update (2026-09-29): all existing notebooks now have saved outputs from successful local fresh-kernel execution, with Colab setup cells and links. Earlier execution deferrals below are historical. Live Colab interaction remains unverified. See the [canonical roadmap](../notebooks/README.md) for Ready/WIP status and prerequisites. C1 remains planned.
 
 ## Curriculum context
 
-This is the implementation record for foundation Notebook 1; its settled calculations remain unchanged. The [canonical roadmap](notebooks/README.md) now organizes an independent Liquid Compute curriculum into a shared foundation, financing and market-risk tracks, electives, and an original transaction capstone. Financing can begin after Notebook 2; Notebook 3 prepares readers for Notebook 4 / M1, the tenor trade. See [PLAN_03.md](PLAN_03.md) for the third foundation lesson.
+This is the implementation record for foundation Notebook 1; its settled calculations remain unchanged. The [canonical roadmap](../notebooks/README.md) now organizes an independent Liquid Compute curriculum into a shared foundation, financing and market-risk tracks, electives, and an original transaction capstone. Financing can begin after Notebook 2; Notebook 3 prepares readers for Notebook 4 / M1, the tenor trade. See [PLAN_03.md](PLAN_03.md) for the third foundation lesson.
 
 Working title: **The Compute Business: Capacity, Utilization, and Profit**.
 
@@ -121,7 +121,7 @@ Planned structure:
 
 ```text
 AGENTS.md
-PLAN.md
+docs/PLAN.md
 README.md
 pyproject.toml
 src/liquid_compute/__init__.py

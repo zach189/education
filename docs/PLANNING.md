@@ -4,15 +4,15 @@
 
 The user authorized running every notebook, saving outputs, adding GitHub package installation in Colab, and publishing to `zach189/education`. All 26 existing notebooks passed fresh-kernel execution locally and have saved outputs. The first code cell installs the package in Colab; local execution reuses `.venv`. All 740 tests, Ruff checks, formatting checks, and mypy passed. Live Colab interaction remains unverified.
 
-**Ready:** notebooks 1–4 (4 is M1), M5 calls and puts, M6 option valuation, and the compute lab financing case study. **WIP:** all other existing lessons, including E1 compound options. C1 remains planned. Release readiness is the user's teaching selection, separate from execution success. See the [notebook index](README.md) for Colab links and the [canonical roadmap](notebooks/README.md) for prerequisites.
+**Ready:** notebooks 1–4 (4 is M1), M5 calls and puts, M6 option valuation, and the compute lab financing case study. **WIP:** all other existing lessons, including E1 compound options. C1 remains planned. Release readiness is the user's teaching selection, separate from execution success. See the [notebook index](../README.md) for Colab links and the [canonical roadmap](../notebooks/README.md) for prerequisites.
 
 Earlier dated execution deferrals below are historical and superseded by this update. Live-presentation checks remain pending where not already recorded as complete.
 
-This is the plan index and shared implementation contract. The [notebook roadmap](notebooks/README.md) remains the source of truth for curriculum scope and prerequisites. Planning documents are specifications, not claims that the corresponding notebooks or calculators exist.
+This is the plan index and shared implementation contract. The [notebook roadmap](../notebooks/README.md) remains the source of truth for curriculum scope and prerequisites. Planning documents are specifications, not claims that the corresponding notebooks or calculators exist.
 
 ## Current inventory
 
-All 26 existing lessons have notebook source, reusable calculations, tests, and saved outputs from fresh-kernel execution on 2026-09-29. Release readiness and live-presentation status are recorded in the [canonical roadmap](notebooks/README.md). C1 remains planned.
+All 26 existing lessons have notebook source, reusable calculations, tests, and saved outputs from fresh-kernel execution on 2026-09-29. Release readiness and live-presentation status are recorded in the [canonical roadmap](../notebooks/README.md). C1 remains planned.
 
 The original planning update changed documentation only. A subsequent F1 completion pass repaired math rendering and live explorer output, verified local behavior, and saved fresh-kernel results. No dependencies or environment were added.
 
@@ -171,7 +171,7 @@ Scope adaptation: reusable typed calculators and rendering helpers implement the
 
 ## Market-risk and elective implementation audit
 
-All thirteen requested lessons M1–M7 and E1–E6 have been created and reviewed against their subsection specifications. The [cross-track audit](MARKET_ELECTIVES_REVIEW.md) records scope, subsection coverage, calculation ownership, source limits and final automated checks. C1 remains planned and was not implemented. The current user override defers all notebook-cell execution, saved runtime outputs and live presentation checks.
+All thirteen requested lessons M1–M7 and E1–E6 have been created and reviewed against their subsection specifications. The [cross-track audit](../MARKET_ELECTIVES_REVIEW.md) records scope, subsection coverage, calculation ownership, source limits and final automated checks. C1 remains planned and was not implemented. The current user override defers all notebook-cell execution, saved runtime outputs and live presentation checks.
 
 Final automated result for this pass: **561 passed, 7 deselected**. Ruff lint/format passed; strict mypy passed for 24 source files. Exact M1–M7/E1–E6 inventory, schema/syntax, package imports/direct-call keywords and local documentation links were checked without notebook execution.
 
@@ -181,11 +181,11 @@ The subsequent attached request explicitly authorized execution for M3. Its [rev
 
 ## M1 article-alignment revision (2026-09-28)
 
-The user approved replacing M1’s contracted-first-year/tail framing with recurring monthly resale across the whole commitment, and specifically requested the actual price curve and differences by tenor. The [current M1 record](PLAN_04.md) separates the sourced published B300 term-price snapshot from an independent hypothetical trade, adds explicit prepayment allocation under the cashflows owner, and previews M2 using its existing seller-settlement engine. Earlier first-year/tail descriptions are superseded for notebook teaching; reusable APIs remain compatible. The [canonical roadmap](notebooks/README.md) carries current validation status.
+The user approved replacing M1’s contracted-first-year/tail framing with recurring monthly resale across the whole commitment, and specifically requested the actual price curve and differences by tenor. The [current M1 record](PLAN_04.md) separates the sourced published B300 term-price snapshot from an independent hypothetical trade, adds explicit prepayment allocation under the cashflows owner, and previews M2 using its existing seller-settlement engine. Earlier first-year/tail descriptions are superseded for notebook teaching; reusable APIs remain compatible. The [canonical roadmap](../notebooks/README.md) carries current validation status.
 
 ## Supplemental lab-financing case (2026-09-28)
 
-[Case specification](PLAN_LAB_CASE.md) · [Notebook](notebooks/case_lab_gpu_financing.ipynb).
+[Case specification](PLAN_LAB_CASE.md) · [Notebook](../notebooks/case_lab_gpu_financing.ipynb).
 User-requested supplemental deal case, separate from C1 and all track IDs. Composes
 F1 equal-payment debt and F4 coverage conventions in `lab_financing`; presentation
 stays in `education`. Adds explicit capacity allocation, retained-cash funding,

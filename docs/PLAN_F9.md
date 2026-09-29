@@ -1,11 +1,11 @@
 # F9: Waterfalls, Reserves, and Investor Returns — implementation plan
 
-> Status update (2026-09-29): all existing notebooks now have saved outputs from successful local fresh-kernel execution, with Colab setup cells and links. Earlier execution deferrals below are historical. Live Colab interaction remains unverified. See the [canonical roadmap](notebooks/README.md) for Ready/WIP status and prerequisites. C1 remains planned.
+> Status update (2026-09-29): all existing notebooks now have saved outputs from successful local fresh-kernel execution, with Colab setup cells and links. Earlier execution deferrals below are historical. Live Colab interaction remains unverified. See the [canonical roadmap](../notebooks/README.md) for Ready/WIP status and prerequisites. C1 remains planned.
 
 **Status:** Notebook and calculations created; automated calculation/plot checks and coherence review complete. Fresh-kernel execution and live presentation acceptance deferred by user instruction. **Prerequisites:** F4 and F7; F6/F8 only for those extensions.
-**Notebook:** [notebooks/F9_waterfalls_reserves_returns.ipynb](notebooks/F9_waterfalls_reserves_returns.ipynb).
+**Notebook:** [notebooks/F9_waterfalls_reserves_returns.ipynb](../notebooks/F9_waterfalls_reserves_returns.ipynb).
 
-Read the [canonical roadmap](notebooks/README.md), [shared planning conventions](PLANNING.md), and [project guidance](AGENTS.md). Foundation plans remain implementation records; this document specifies only the new lesson or unfinished work.
+Read the [canonical roadmap](../notebooks/README.md), [shared planning conventions](PLANNING.md), and [project guidance](../AGENTS.md). Foundation plans remain implementation records; this document specifies only the new lesson or unfinished work.
 
 ## Learning decision, assumptions, and worked example
 
