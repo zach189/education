@@ -119,3 +119,26 @@ not rerun kernels or the calculation test suite.
 Publication includes the reviewed language, product labels beneath every scenario
 heading, saved notebook outputs, required package additions and their tests.
 Ready/WIP teaching selections are unchanged.
+
+## Contract mechanics follow-up
+
+Added explicit payment directions to all twelve narratives: who receives the
+fixed or floating amount, who pays option premiums, when protection pays, and
+how hedge payments combine with the separate customer and supplier payments.
+Case 5 now identifies the receive-fixed/pay-floating spread legs, shows both
+payment directions, and derives the remaining margin after the purchase fee.
+Definitions precede its payment table. Notebook schema and generated HTML
+structure were checked; all code cells and saved outputs remain identical to
+the published version. No calculator changes or new kernel execution were
+needed for this prose-only revision.
+
+The second mechanics pass replaces the compact descriptions with numbered
+payment steps in all twelve cases. Each identifies the agreement, covered
+quantity and dates, payment direction, and how cash combines with the underlying
+business. Added low/high payment examples, swaption exercise consequences,
+separate monthly option strips for both offtake parties, and explicit single
+invoice mechanics for both embedded alternatives. Upfront premium timing is
+identified as a teaching assumption, including when premiums remain unknown;
+no upfront swap payment is modeled. Checked the new arithmetic against the
+existing quantities and formulas and visually inspected the spread-swap and
+offtake layouts. Calculation cells, saved outputs and source links are preserved.
