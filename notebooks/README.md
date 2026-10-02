@@ -8,6 +8,11 @@ The shared foundation leads into named tracks: **Financing a deal (F)**, **Manag
 
 All 26 existing notebooks passed fresh-kernel execution locally on 2026-09-29, with outputs saved. Each includes a Colab setup cell to install the package from GitHub. Live Colab interaction remains unverified. The capstone is still planned. See the [Colab notebook index](../README.md), [implementation plans](../docs/PLANNING.md), and [historical conversation](../chat.md).
 
+Added 2026-10-01: the [hedge-converter teaching supplement](case_hedge_converter.ipynb)
+brings the local inventory to 27. Its fresh-kernel execution and saved static
+presentation review passed. It remains a WIP teaching draft pending user review;
+a Colab link is included in the root index. Live Colab verification is pending.
+
 ## Ready and WIP
 
 **Ready:** notebooks 1–4 (Notebook 4 is M1), M2 forwards and swaps, M5 calls and puts, M6 option valuation, and the [compute lab financing case study](case_lab_gpu_financing.ipynb). **WIP:** F1–F9, M3–M4, M7, and E1–E6. C1 remains planned. These release labels reflect the user's selected teaching readiness, independently of successful execution. All existing lessons have saved results; pending live presentation checks are not claimed as complete.
@@ -125,6 +130,24 @@ For all track plans, calculation ownership, source research gates and the cohere
 See the [project README](../README.md) for setup and checks, [AGENTS.md](../AGENTS.md) for engineering conventions, and the individual foundation plans: [1](../docs/PLAN.md), [2](../docs/PLAN_02.md), and [3](../docs/PLAN_03.md). Extend the typed package only as a lesson needs a stable calculation. Reuse the existing Python 3.10 environment. Colab setup and verification remain deferred until the series is complete.
 
 ## Supplemental deal case study
+
+### From a business risk to a compute hedge
+
+[Read the hedge-converter notebook](case_hedge_converter.ipynb). No finance
+prerequisites. Follows a lender, equipment owner, operator and buyer through
+their inputs, strike/notional derivations and business outcomes. Includes a
+buyer cost chart, premium and basis experiments, and an optional appendix
+reproducing all 24 formulas from the user-supplied trading-tools workbook.
+Basic Python helps with editing the input cells; saved outputs support reading
+without execution. Reuses M5 option payoffs and existing presentation helpers.
+Source reconciliation, 792 repository tests, lint/format/type checks, fresh-kernel
+execution and local HTML/table/chart inspection passed. There are no widgets in
+this supplement; live Jupyter editing and Colab remain unverified. The source
+LCI observation is explicitly unverified, not a current quote. See the
+[case specification](../docs/PLAN_HEDGE_CASE.md). This supplement does not
+implement C1 or change the existing Ready selections.
+
+### Compute lab financing
 
 [Can a training lab support a USD 500 million GPU loan?](case_lab_gpu_financing.ipynb)
 explores an anonymized, unverified user-supplied deal prompt with explicit hypothetical

@@ -12,6 +12,14 @@ This is the plan index and shared implementation contract. The [notebook roadmap
 
 ## Current inventory
 
+2026-10-01 addition: [hedge-converter teaching case](PLAN_HEDGE_CASE.md), a
+standalone WIP supplement with four beginner narratives and a source-reproduction
+appendix. Local fresh-kernel outputs and static presentation review are complete;
+the total inventory is now 27. The four strike/notional translations belong to
+`hedge_converter`; M5 retains payoff ownership in `options`. No new track ID or
+C1 implementation is implied. A Colab link is included in the notebook index;
+live Colab testing remains pending.
+
 All 26 existing lessons have notebook source, reusable calculations, tests, and saved outputs from fresh-kernel execution on 2026-09-29. Release readiness and live-presentation status are recorded in the [canonical roadmap](../notebooks/README.md). C1 remains planned.
 
 The original planning update changed documentation only. A subsequent F1 completion pass repaired math rendering and live explorer output, verified local behavior, and saved fresh-kernel results. No dependencies or environment were added.
