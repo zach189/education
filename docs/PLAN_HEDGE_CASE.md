@@ -73,3 +73,29 @@ and local rendering of the input tables passed.
 Section-boundary follow-up: separated ten Markdown cell boundaries so each
 section starts in its own cell. All prose, code and saved outputs were preserved;
 notebook schema, formatting and rendered heading structure passed.
+
+Lender narrative follow-up: explain default before any use, unexpired transferable
+capacity, full placement with one or several replacement customers, and the
+difference between physical hours and a fee-adjusted option multiplier. Derive
+the 360,000-hour notional from a USD 1 price decline, distinguish the USD 2.50
+purchase rate from the USD 2.083333… principal-recovery strike, and explain why
+the agent fee is not deducted from the option payout. The comparison includes
+the original purchase rate and calculates gross receipts and the agent fee
+explicitly before net recovery. Remaining hours and remaining loan balance must
+be reassessed together if the base assumptions change.
+
+Each main scenario now begins with a first-person explanation of what could go
+wrong, the specific dollar or business outcome the person wants to protect,
+and how the hedge helps. The lender faces insufficient recovery after borrower
+default; the lessor faces rental income below a residual recovery target; the
+operator faces revenue below continuing costs and loan payments; the buyer faces
+future compute bills above budget. These statements distinguish offsetting a
+price-related cash loss from preventing default, idle capacity, or rising prices.
+This prose-only follow-up preserves all calculation cells and saved outputs.
+
+Leon's USD 6,000 target now has an explicit hypothetical business backstory:
+USD 10,000 purchase cost less USD 4,000 expected first-lease cash after operating
+costs leaves USD 6,000 per GPU still to recover. These added assumptions are not
+attributed to the supplied documents. Accounting residual is separately assumed
+to match this cash target, not calculated by subtracting rental receipts from
+book value. Recovery is distinguished from extra profit and from sale proceeds.
