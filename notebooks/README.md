@@ -19,6 +19,12 @@ including the expanded indexed-offtake walkthrough. Local execution and saved
 outputs are verified. A Colab link is included in the root index; live Colab
 verification remains pending.
 
+Added 2026-10-02: [From a business risk to a forward or swap](case_forwards_and_swaps.ipynb)
+brings the local inventory to 29. This imported WIP supplement retains its supplied
+saved outputs. Notebook format and Python syntax are validated; fresh-kernel
+execution, local presentation review and live Colab verification in this project
+are pending.
+
 ## Ready and WIP
 
 **Ready:** notebooks 1–4 (Notebook 4 is M1), M2 forwards and swaps, M5 calls and puts, M6 option valuation, and the [compute lab financing case study](case_lab_gpu_financing.ipynb). **WIP:** F1–F9, M3–M4, M7, and E1–E6. C1 remains planned. These release labels reflect the user's selected teaching readiness, independently of successful execution. All existing lessons have saved results; pending live presentation checks are not claimed as complete.
@@ -168,6 +174,16 @@ verified. No widgets are added. Teaching status is WIP; live Colab remains
 unverified. Published with its supporting calculators, tests and Colab link. See the
 [implementation record](../docs/PLAN_HEDGE_CASE_02.md). Existing Ready selections
 and C1's planned status are unchanged.
+
+### From a business risk to a forward or swap
+
+[Read the forwards-and-swaps case study](case_forwards_and_swaps.ipynb). A standalone
+companion to the hedge-converter supplement and M2, covering physical and cash
+forwards, both swap directions, quantity mismatches, pricing, and collateral.
+No finance background is required. It uses standard Python and Matplotlib,
+with supplied saved outputs for reading without execution. Imported unchanged;
+teaching status is WIP, with fresh-kernel execution and presentation review in
+this project pending. A Colab link is included in the root index.
 
 ### Compute lab financing
 

@@ -2,7 +2,7 @@
 
 Learn compute economics, financing, and options through worked examples. **[Start Notebook 1 in Google Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/01_compute_business.ipynb).** No local setup is required: open a lesson and choose **Runtime → Run all**. Its first code cell downloads and installs `liquid_compute` from this repository and enables widgets. A CPU runtime is sufficient.
 
-All 28 notebooks were run locally with outputs saved. Use **Read notebook** to see tables and charts without running code. Edit the assumption cells to explore other scenarios; widgets are optional.
+The 28 previously included notebooks were run locally with outputs saved. The newly imported forwards-and-swaps case study also includes saved outputs; fresh-kernel execution and presentation review in this project are pending. Use **Read notebook** to see tables and charts without running code. Edit the assumption cells to explore other scenarios; widgets are optional.
 
 ## Ready
 
@@ -27,6 +27,7 @@ These lessons have runnable examples and saved outputs, but remain works in prog
 |---|---|---|
 | From a business risk to a compute hedge — four beginner walkthroughs and source calculations | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/case_hedge_converter.ipynb) | [Read notebook](notebooks/case_hedge_converter.ipynb) |
 | Compute hedging, Part 2 — twelve product walkthroughs, including indexed offtake | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/case_hedging_products_part_2.ipynb) | [Read notebook](notebooks/case_hedging_products_part_2.ipynb) |
+| From a business risk to a forward or swap | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/case_forwards_and_swaps.ipynb) | [Read notebook](notebooks/case_forwards_and_swaps.ipynb) |
 | F1 · Financing a compute prepayment | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/F1_financing_a_compute_prepayment.ipynb) | [Read notebook](notebooks/F1_financing_a_compute_prepayment.ipynb) |
 | F2 · Bridging an OEM deposit to customer prepayment | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/F2_oem_deposit_bridge.ipynb) | [Read notebook](notebooks/F2_oem_deposit_bridge.ipynb) |
 | F3 · What makes a customer contract financeable? | [Open in Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/F3_offtake_financeability.ipynb) | [Read notebook](notebooks/F3_offtake_financeability.ipynb) |
@@ -60,7 +61,7 @@ python -m pip install -e '.[notebook,dev]'
 python -m jupyter lab
 ```
 
-The Colab setup cell leaves the local environment unchanged. The reusable calculation package has no runtime dependencies; display dependencies are optional extras. Colab installs the current `main` branch, so future runs may use newer package code.
+The Colab setup cell leaves the local environment unchanged. The reusable calculation package has no runtime dependencies; display dependencies are optional extras. Colab installs the current `main` branch, so future runs may use newer package code. The standalone forwards-and-swaps case study uses standard Python and Matplotlib directly and needs no package setup cell.
 
 ## Development
 
