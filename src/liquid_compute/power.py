@@ -74,3 +74,19 @@ def average_it_kw_per_gpu(
     if active < idle:
         raise ValueError("active_kw_per_gpu must be at least idle_kw_per_gpu")
     return _finite_number("average IT kW", idle + fraction * (active - idle))
+
+
+def power_swap_receipt_usd(
+    *, energy_mwh: float, market_usd_per_mwh: float, fixed_usd_per_mwh: float
+) -> float:
+    """Power buyer receives floating, pays fixed: MWh * (market - fixed).
+
+    Positive USD offsets a higher physical power bill; negative is a payment.
+    Energy finite >=0; both prices finite, signed (power prices can be negative).
+    No delivered tariff basis, demand charges, load variation or credit model.
+    Wrong types/bools TypeError; range/nonfinite/overflow ValueError.
+    """
+    energy = _nonnegative("energy_mwh", energy_mwh)
+    market = _finite_number("market_usd_per_mwh", market_usd_per_mwh)
+    fixed = _finite_number("fixed_usd_per_mwh", fixed_usd_per_mwh)
+    return _finite_number("power swap receipt", energy * _total([market, -fixed]))

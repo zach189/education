@@ -10,7 +10,7 @@ from typing import Literal
 
 from .cashflows import _integer
 from .economics import _finite_number, _positive_number
-from .financing import _fraction, _nonnegative
+from .financing import _fraction, _nonnegative, _total
 
 
 @dataclass(frozen=True)
@@ -135,3 +135,65 @@ def buyer_hedge_terms(
     return HedgeTerms(
         "call", strike, _finite_number("notional GPU-hours", count * hours)
     )
+
+
+def revenue_floor_hedge_terms(
+    *, required_revenue_usd: float, expected_gpu_hours: float
+) -> HedgeTerms:
+    """Put strike = period gross revenue target / matching billed GPU-hours.
+
+    Target finite >=0; hours finite >0. No premium, valuation or quantity
+    guarantee. The target and hours must describe the same settlement period.
+    Wrong types/bools raise TypeError; invalid ranges/nonfinite/overflow ValueError.
+    """
+    target = _nonnegative("required_revenue_usd", required_revenue_usd)
+    hours = _positive_number("expected_gpu_hours", expected_gpu_hours)
+    return HedgeTerms("put", _finite_number("strike", target / hours), hours)
+
+
+@dataclass(frozen=True)
+class FinancingHedgeRequirement:
+    """Gross merchant cash target, GPU-hour notional and USD/GPU-hour floor.
+
+    A None strike means a positive cash gap with no hours: no finite price
+    floor can meet it. Zero required cash returns zero strike, including when
+    hours are zero. This does not measure lending eligibility or hedge value.
+    """
+
+    required_merchant_revenue_usd: float
+    notional_gpu_hours: float
+    strike_usd_per_gpu_hour: float | None
+
+
+def financing_hedge_requirement(
+    *,
+    target_dscr: float,
+    debt_service_usd: float,
+    operating_cost_usd: float,
+    contracted_receipts_usd: float,
+    merchant_gpu_hours: float,
+) -> FinancingHedgeRequirement:
+    """Period merchant target = max(DSCR * debt service + costs - receipts, 0).
+
+    Receipts are gross cash, not already net of costs. Debt service includes
+    supplied interest/principal, not derived from a loan balance. Target DSCR
+    finite >=1; all other inputs finite >=0, in the same period. A put on
+    matching actual receipts could fill the gap before premium, assuming the
+    lender accepts hedge cash. No quantity/default guarantee. Errors as above.
+    """
+    target = _positive_number("target_dscr", target_dscr)
+    if target < 1:
+        raise ValueError("target_dscr must be at least 1")
+    debt = _nonnegative("debt_service_usd", debt_service_usd)
+    costs = _nonnegative("operating_cost_usd", operating_cost_usd)
+    receipts = _nonnegative("contracted_receipts_usd", contracted_receipts_usd)
+    hours = _nonnegative("merchant_gpu_hours", merchant_gpu_hours)
+    required = max(_total([target * debt, costs, -receipts]), 0.0)
+    strike: float | None
+    if required == 0:
+        strike = 0.0
+    elif hours == 0:
+        strike = None
+    else:
+        strike = _finite_number("strike", required / hours)
+    return FinancingHedgeRequirement(required, hours, strike)

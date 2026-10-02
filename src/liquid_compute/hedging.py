@@ -401,3 +401,30 @@ def benchmark_basis_deviations_usd(
         ).budget_deviation_usd
         for name, actual in actual_prices.items()
     }
+
+
+def spread_swap_settlement_usd(
+    *,
+    sale_index_usd_per_gpu_hour: float,
+    purchase_index_usd_per_gpu_hour: float,
+    fixed_spread_usd_per_gpu_hour: float,
+    covered_gpu_hours: float,
+) -> float:
+    """Receive fixed spread, pay sale-minus-purchase index spread, in USD.
+
+    Receipt H * (K - (sale - purchase)); negative means a payment. Physical
+    exposure must have equal quantities and matching resets for an offset.
+    Both outright indices finite >=0; fixed spread finite and may be negative;
+    hours finite >=0. Excludes premiums, collateral, basis and default.
+    Wrong types/bools TypeError; invalid ranges/nonfinite/overflow ValueError.
+    """
+    sale = _nonnegative("sale_index_usd_per_gpu_hour", sale_index_usd_per_gpu_hour)
+    purchase = _nonnegative(
+        "purchase_index_usd_per_gpu_hour", purchase_index_usd_per_gpu_hour
+    )
+    fixed = _finite_number(
+        "fixed_spread_usd_per_gpu_hour", fixed_spread_usd_per_gpu_hour
+    )
+    hours = _nonnegative("covered_gpu_hours", covered_gpu_hours)
+    spread = _total([sale, -purchase])
+    return _finite_number("spread settlement", hours * _total([fixed, -spread]))

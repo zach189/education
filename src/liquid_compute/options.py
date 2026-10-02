@@ -152,3 +152,33 @@ def staged_option_cash_flows(
             )
         )
     return tuple(rows)
+
+
+def tenor_spread_put_payoff_usd(
+    *,
+    short_tenor_index_usd_per_gpu_hour: float,
+    long_tenor_index_usd_per_gpu_hour: float,
+    strike_spread_usd_per_gpu_hour: float,
+    covered_gpu_hours: float,
+) -> float:
+    """Cash put H * max(K - (short-tenor index - long-tenor index), 0).
+
+    Both outright indices finite >=0, quantity finite >=0. Strike spread is
+    finite and may be negative, as may the observed spread. All observations
+    must follow the agreed matching settlement methodology. This is a payoff,
+    not a premium/valuation or proof of physical margin protection. Wrong
+    types/bools TypeError; invalid ranges/nonfinite/overflow ValueError.
+    """
+    short_index = _nonnegative(
+        "short_tenor_index_usd_per_gpu_hour", short_tenor_index_usd_per_gpu_hour
+    )
+    long_index = _nonnegative(
+        "long_tenor_index_usd_per_gpu_hour", long_tenor_index_usd_per_gpu_hour
+    )
+    strike = _finite_number(
+        "strike_spread_usd_per_gpu_hour", strike_spread_usd_per_gpu_hour
+    )
+    hours = _nonnegative("covered_gpu_hours", covered_gpu_hours)
+    spread = _total([short_index, -long_index])
+    shortfall = max(_total([strike, -spread]), 0.0)
+    return _finite_number("spread put payoff", shortfall * hours)

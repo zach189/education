@@ -20,6 +20,14 @@ the total inventory is now 27. The four strike/notional translations belong to
 C1 implementation is implied. A Colab link is included in the notebook index;
 live Colab testing remains pending.
 
+Part 2 addition: [twelve hedging product walkthroughs](PLAN_HEDGE_CASE_02.md)
+raises the local inventory to 28, with a detailed indexed-offtake extension from
+the user's follow-up. Reuse M2/M5/F4 settlements, option payoffs and DSCR; add
+period revenue/financing-gap translations under `hedge_converter`, spread
+settlement under `hedging`, and power swap receipts under `power`. This remains
+a WIP supplement, not a new track or C1. See its record for verification and
+publication status.
+
 All 26 existing lessons have notebook source, reusable calculations, tests, and saved outputs from fresh-kernel execution on 2026-09-29. Release readiness and live-presentation status are recorded in the [canonical roadmap](../notebooks/README.md). C1 remains planned.
 
 The original planning update changed documentation only. A subsequent F1 completion pass repaired math rendering and live explorer output, verified local behavior, and saved fresh-kernel results. No dependencies or environment were added.

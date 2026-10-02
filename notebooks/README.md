@@ -13,6 +13,12 @@ brings the local inventory to 27. Its fresh-kernel execution and saved static
 presentation review passed. It remains a WIP teaching draft pending user review;
 a Colab link is included in the root index. Live Colab verification is pending.
 
+Added next: [hedging products, Part 2](case_hedging_products_part_2.ipynb)
+brings the local inventory to 28. This WIP supplement contains twelve cases,
+including the expanded indexed-offtake walkthrough. Local execution and saved
+outputs are verified. A Colab link is included in the root index; live Colab
+verification remains pending.
+
 ## Ready and WIP
 
 **Ready:** notebooks 1–4 (Notebook 4 is M1), M2 forwards and swaps, M5 calls and puts, M6 option valuation, and the [compute lab financing case study](case_lab_gpu_financing.ipynb). **WIP:** F1–F9, M3–M4, M7, and E1–E6. C1 remains planned. These release labels reflect the user's selected teaching readiness, independently of successful execution. All existing lessons have saved results; pending live presentation checks are not claimed as complete.
@@ -146,6 +152,22 @@ this supplement; live Jupyter editing and Colab remain unverified. The source
 LCI observation is explicitly unverified, not a current quote. See the
 [case specification](../docs/PLAN_HEDGE_CASE.md). This supplement does not
 implement C1 or change the existing Ready selections.
+
+### Hedging products, Part 2
+
+[Read Part 2](case_hedging_products_part_2.ipynb). Twelve short product cases continue
+Part 1's person → risk → inputs → derivation → outcomes format. The supplied
+numbers are retained, added teaching assumptions are labeled, real-deal claims
+link to inspected primary sources, and the Texas-region basis-swap case is omitted.
+The expanded indexed-offtake case distinguishes physical minimum payments,
+separate buyer calls and seller puts, premiums, extra usage, and embedded collars.
+Read the collection one case at a time; it is longer than one standard lesson.
+
+Fresh-kernel outputs, calculation tests and local rendered tables/charts are
+verified. No widgets are added. Teaching status is WIP; live Colab remains
+unverified. Published with its supporting calculators, tests and Colab link. See the
+[implementation record](../docs/PLAN_HEDGE_CASE_02.md). Existing Ready selections
+and C1's planned status are unchanged.
 
 ### Compute lab financing
 
