@@ -21,9 +21,9 @@ verification remains pending.
 
 Added 2026-10-02: [From a business risk to a forward or swap](case_forwards_and_swaps.ipynb)
 brings the local inventory to 29. This imported WIP supplement retains its supplied
-saved outputs. Notebook format and Python syntax are validated; fresh-kernel
-execution, local presentation review and live Colab verification in this project
-are pending.
+saved outputs. Its Colab setup, code formatting, and separation of lesson content
+from automated checks now follow project conventions. Fresh-kernel execution,
+local presentation review, and live Colab verification remain pending.
 
 ## Ready and WIP
 
@@ -181,9 +181,10 @@ and C1's planned status are unchanged.
 companion to the hedge-converter supplement and M2, covering physical and cash
 forwards, both swap directions, quantity mismatches, pricing, and collateral.
 No finance background is required. It uses standard Python and Matplotlib,
-with supplied saved outputs for reading without execution. Imported unchanged;
-teaching status is WIP, with fresh-kernel execution and presentation review in
-this project pending. A Colab link is included in the root index.
+with supplied saved outputs for reading without execution. Static integration with
+the project's Colab, formatting, and testing conventions is complete. Teaching
+status is WIP; fresh-kernel execution, local presentation review, and live Colab
+verification remain pending. A Colab link is included in the root index.
 
 ### Compute lab financing
 
