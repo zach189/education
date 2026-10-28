@@ -2,7 +2,7 @@
 
 Learn compute economics, financing, and options through worked examples. **[Start Notebook 1 in Google Colab](https://colab.research.google.com/github/zach189/education/blob/main/notebooks/01_compute_business.ipynb).** No local setup is required: open a lesson and choose **Runtime → Run all**. Its first code cell downloads and installs `liquid_compute` from this repository and enables widgets. A CPU runtime is sufficient.
 
-The 28 previously included notebooks were run locally with outputs saved. The newly imported forwards-and-swaps case study also includes saved outputs; fresh-kernel execution and presentation review in this project are pending. Use **Read notebook** to see tables and charts without running code. Edit the assumption cells to explore other scenarios; widgets are optional.
+The 28 previously included notebooks were run locally with outputs saved. The newly imported forwards-and-swaps case study also includes saved outputs and now follows the project's static integration conventions; fresh-kernel execution and presentation review in this project are pending. Use **Read notebook** to see tables and charts without running code. Edit the assumption cells to explore other scenarios; widgets are optional.
 
 ## Ready
 
@@ -61,7 +61,7 @@ python -m pip install -e '.[notebook,dev]'
 python -m jupyter lab
 ```
 
-The Colab setup cell leaves the local environment unchanged. The reusable calculation package has no runtime dependencies; display dependencies are optional extras. Colab installs the current `main` branch, so future runs may use newer package code. The standalone forwards-and-swaps case study uses standard Python and Matplotlib directly and needs no package setup cell.
+The Colab setup cell leaves the local environment unchanged. The reusable calculation package has no runtime dependencies; display dependencies are optional extras. Colab installs the current `main` branch, so future runs may use newer package code. The standalone forwards-and-swaps case study uses standard Python and Matplotlib directly; it retains the shared setup cell for consistent Colab behavior and notebook validation.
 
 ## Development
 
