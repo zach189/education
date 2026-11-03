@@ -99,3 +99,17 @@ costs leaves USD 6,000 per GPU still to recover. These added assumptions are not
 attributed to the supplied documents. Accounting residual is separately assumed
 to match this cash target, not calculated by subtracting rental receipts from
 book value. Recovery is distinguished from extra profit and from sale proceeds.
+
+Operator gross-up follow-up (2026-10-19): per reviewer feedback, operator
+break-even is an input per installed GPU-hour, because operating costs and debt
+service run on all installed hours while revenue is earned only on billed hours.
+`operator_hedge_terms` now returns strike = break-even ÷ utilization and rejects
+zero utilization; notional is unchanged. The workbook's `B51` copies break-even
+to strike; the appendix shows the grossed-up value as a correction and keeps the
+supplied formula in prose. Reviewer test case reconciled in tests: 1,024 GPUs,
+USD 1.95, 80% → strike 2.4375 (84.9% of 2.87), 7,176,192 exposed and 1,794,048
+unused hours, USD 20,595,671 notional at reference, USD 17,491,968 maximum
+payout, USD 10,315,776 at USD 1.00 and USD 3,498,394 at USD 1.95, and unhedged
+endpoints of −17.49M at USD 0 and +23.70M at USD 5.74. Omar's story now uses
+USD 1.80 per installed hour (USD 0.60 opex + USD 1.20 debt service), grossed up
+to a USD 2.25 strike. No operator chart is added. Fresh-kernel execution passed.

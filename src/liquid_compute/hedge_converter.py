@@ -103,17 +103,24 @@ def operator_hedge_terms(
     breakeven_usd_per_gpu_hour: float,
     hours_per_gpu_month: float = 730,
 ) -> HedgeTerms:
-    """Put at a supplied break-even threshold over planned billed hours.
+    """Put over planned billed hours at break-even grossed up by utilization.
 
+    Break-even is USD per installed GPU-hour: operating costs and debt service
+    run on all installed hours, but revenue is earned only on billed hours.
+    K=breakeven/u, N=GPUs*u*h_month*months, so K*N equals total costs.
     This does not derive costs or recompute break-even if utilization changes.
-    Count integer >=0, months integer >0, utilization [0,1], break-even >=0,
+    Count integer >=0, months integer >0, utilization (0,1], break-even >=0,
     monthly hours >0. Numeric validation and errors as lender converter.
     """
     count = _finite_number("gpu_count", _integer("gpu_count", gpu_count, minimum=0))
-    strike = _nonnegative("breakeven_usd_per_gpu_hour", breakeven_usd_per_gpu_hour)
+    breakeven = _nonnegative("breakeven_usd_per_gpu_hour", breakeven_usd_per_gpu_hour)
     hours = _hours_per_gpu(months, utilization_fraction, hours_per_gpu_month)
+    if utilization_fraction == 0:
+        raise ValueError("utilization_fraction must be greater than 0")
     return HedgeTerms(
-        "put", strike, _finite_number("notional GPU-hours", count * hours)
+        "put",
+        _finite_number("strike", breakeven / utilization_fraction),
+        _finite_number("notional GPU-hours", count * hours),
     )
 
 

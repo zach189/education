@@ -43,7 +43,7 @@ def test_source_workbook_values():
     d = buyer_hedge_terms(gpu_count=256, months=12, budget_usd_per_gpu_hour=3)
     assert [a.kind, b.kind, c.kind, d.kind] == ["put", "put", "put", "call"]
     assert [x.strike_usd_per_gpu_hour for x in (a, b, c, d)] == pytest.approx(
-        [2.222222222222222, 1.704631441617743, 1.95, 3]
+        [2.222222222222222, 1.704631441617743, 2.4375, 3]
     )
     assert [x.notional_gpu_hours for x in (a, b, c, d)] == pytest.approx(
         [3_600_000, 3_139_584, 7_176_192, 2_242_560]
@@ -89,7 +89,7 @@ def test_zero_and_full_boundaries():
     assert lessor(gpu_count=0).notional_gpu_hours == 0
     assert (
         operator_hedge_terms(
-            gpu_count=1, months=1, utilization_fraction=0, breakeven_usd_per_gpu_hour=0
+            gpu_count=0, months=1, utilization_fraction=1, breakeven_usd_per_gpu_hour=0
         ).notional_gpu_hours
         == 0
     )
@@ -155,7 +155,47 @@ def test_operator_and_buyer_reject_invalid_inputs():
             utilization_fraction=1.1,
             breakeven_usd_per_gpu_hour=1,
         )
+    with pytest.raises(ValueError):
+        operator_hedge_terms(
+            gpu_count=1,
+            months=1,
+            utilization_fraction=0,
+            breakeven_usd_per_gpu_hour=1,
+        )
     with pytest.raises(TypeError):
         buyer_hedge_terms(gpu_count=1, months=True, budget_usd_per_gpu_hour=1)
     with pytest.raises(ValueError):
         buyer_hedge_terms(gpu_count=1, months=1, budget_usd_per_gpu_hour=-1)
+
+
+def test_operator_strike_grossed_up_by_utilization():
+    """Reviewer test case: 1,024 GPUs, USD 1.95 break-even, 12 months, 80%."""
+    terms = operator_hedge_terms(
+        gpu_count=1_024,
+        months=12,
+        utilization_fraction=0.8,
+        breakeven_usd_per_gpu_hour=1.95,
+    )
+    hours = terms.notional_gpu_hours
+    strike = terms.strike_usd_per_gpu_hour
+    assert strike == pytest.approx(2.4375)
+    assert strike / 2.87 == pytest.approx(0.849303, abs=1e-6)
+    assert hours == pytest.approx(7_176_192)
+    assert 1_024 * 730 * 12 - hours == pytest.approx(1_794_048)
+    assert hours * 2.87 == pytest.approx(20_595_671.04)
+    # Maximum payout equals total installed-hour costs.
+    assert strike * hours == pytest.approx(1.95 * 1_024 * 730 * 12)
+    assert strike * hours == pytest.approx(17_491_968)
+
+    def pays(price):
+        return european_option_payoff_usd(
+            kind=terms.kind,
+            settlement_price_usd_per_gpu_hour=price,
+            strike_usd_per_gpu_hour=strike,
+            covered_gpu_hours=hours,
+        )
+
+    assert pays(1.00) == pytest.approx(10_315_776)
+    assert pays(0.8 * strike) == pytest.approx(3_498_393.6)
+    assert (0 - strike) * hours == pytest.approx(-17_491_968)
+    assert (5.74 - strike) * hours == pytest.approx(23_699_374.08)

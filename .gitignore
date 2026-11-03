@@ -8,3 +8,7 @@ __pycache__/
 build/
 dist/
 .DS_Store
+
+# CFTC RFC source PDFs (re-download with research/cftc-compute-rfc/scripts)
+research/cftc-compute-rfc/comments/**/*.pdf
+.env

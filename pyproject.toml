@@ -14,6 +14,7 @@ dependencies = []
 colab = ["matplotlib>=3.9,<4", "ipywidgets>=8.1,<9"]
 notebook = ["matplotlib>=3.9,<4", "ipywidgets>=8.1,<9", "ipython>=8.20,<9", "ipykernel>=6.29,<7", "jupyterlab>=4.2,<5"]
 dev = ["pytest>=8,<9", "ruff>=0.11,<1", "mypy>=1.15,<2", "nbformat>=5.10,<6", "nbclient>=0.10,<1"]
+research = ["duckdb>=1.1,<2", "pandas>=2.2,<3"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
